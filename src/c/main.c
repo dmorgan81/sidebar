@@ -3,8 +3,21 @@
 
 static Window *s_window;
 
+static void prv_update_proc(Layer *this, GContext *ctx) {
+    logf();
+    GRect bounds = layer_get_bounds(this);
+
+    graphics_context_set_fill_color(ctx, GColorWhite);
+    graphics_fill_rect(ctx, bounds, 0, GCornerNone);
+
+    graphics_context_set_fill_color(ctx, PBL_IF_COLOR_ELSE(GColorVividCerulean, GColorLightGray));
+    graphics_fill_rect(ctx, GRect(bounds.size.w - ACTION_BAR_WIDTH, 0, ACTION_BAR_WIDTH, bounds.size.h), 0, GCornerNone);
+}
+
 static void prv_window_load(Window *window) {
     logf();
+    Layer *root_layer = window_get_root_layer(window);
+    layer_set_update_proc(root_layer, prv_update_proc);
 }
 
 static void prv_window_unload(Window *window) {
