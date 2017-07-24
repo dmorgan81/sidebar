@@ -6,7 +6,13 @@
     "pebble-app"
   ],
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "pebble-events": "^1.2.0",
+    "pebble-fctx": "^1.6.2"
+  },
+  "devDependencies": {
+    "pebble-fctx-compiler": "^1.2.2"
+  },
   "pebble": {
     "displayName": "Sidebar",
     "uuid": "58c07314-1048-4cba-b7be-246ec5ac3697",
@@ -22,7 +28,13 @@
     },
     "messageKeys": [],
     "resources": {
-      "media": []
+      "media": [
+        {
+          "type": "raw",
+          "name": "FONT_LECO",
+          "file": "LECO1976-Regular.ffont"
+        }
+      ]
     }
   }
 }

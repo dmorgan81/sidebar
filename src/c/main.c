@@ -1,7 +1,9 @@
 #include <pebble.h>
 #include "logging.h"
+#include "time-layer.h"
 
 static Window *s_window;
+static TimeLayer *s_time_layer;
 
 static void prv_update_proc(Layer *this, GContext *ctx) {
     logf();
@@ -18,10 +20,15 @@ static void prv_window_load(Window *window) {
     logf();
     Layer *root_layer = window_get_root_layer(window);
     layer_set_update_proc(root_layer, prv_update_proc);
+    GRect bounds = layer_get_bounds(root_layer);
+
+    s_time_layer = time_layer_create(GRect(0, 12, bounds.size.w - ACTION_BAR_WIDTH, bounds.size.h - 24));
+    layer_add_child(root_layer, s_time_layer);
 }
 
 static void prv_window_unload(Window *window) {
     logf();
+    time_layer_destroy(s_time_layer);
 }
 
 static void prv_init(void) {
