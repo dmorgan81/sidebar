@@ -2,6 +2,7 @@
 #include "logging.h"
 #include "time-layer.h"
 #include "date-layer.h"
+#include "status-layer.h"
 #include "battery-layer.h"
 
 #define WIDGET_HEIGHT 56
@@ -9,6 +10,7 @@
 static Window *s_window;
 static TimeLayer *s_time_layer;
 static DateLayer *s_date_layer;
+static StatusLayer *s_status_layer;
 static BatteryLayer *s_battery_layer;
 
 static void prv_update_proc(Layer *this, GContext *ctx) {
@@ -31,16 +33,22 @@ static void prv_window_load(Window *window) {
     s_time_layer = time_layer_create(GRect(0, 12, bounds.size.w - ACTION_BAR_WIDTH, bounds.size.h - 24));
     layer_add_child(root_layer, s_time_layer);
 
-    s_date_layer = date_layer_create(GRect(bounds.size.w - ACTION_BAR_WIDTH, 0, ACTION_BAR_WIDTH, WIDGET_HEIGHT));
+    int16_t x = bounds.size.w - ACTION_BAR_WIDTH;
+
+    s_date_layer = date_layer_create(GRect(x, 0, ACTION_BAR_WIDTH, WIDGET_HEIGHT));
     layer_add_child(root_layer, s_date_layer);
 
-    s_battery_layer = battery_layer_create(GRect(bounds.size.w - ACTION_BAR_WIDTH, WIDGET_HEIGHT, ACTION_BAR_WIDTH, WIDGET_HEIGHT));
+    s_status_layer = status_layer_create(GRect(x, WIDGET_HEIGHT, ACTION_BAR_WIDTH, WIDGET_HEIGHT));
+    layer_add_child(root_layer, s_status_layer);
+
+    s_battery_layer = battery_layer_create(GRect(x, bounds.size.h - WIDGET_HEIGHT, ACTION_BAR_WIDTH, WIDGET_HEIGHT));
     layer_add_child(root_layer, s_battery_layer);
 }
 
 static void prv_window_unload(Window *window) {
     logf();
     battery_layer_destroy(s_battery_layer);
+    status_layer_destroy(s_status_layer);
     date_layer_destroy(s_date_layer);
     time_layer_destroy(s_time_layer);
 }

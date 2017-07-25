@@ -43,6 +43,11 @@
           "type": "raw",
           "name": "PDC_BATTERY",
           "file": "battery.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_STATUS",
+          "file": "status.pdc"
         }
       ]
     }
