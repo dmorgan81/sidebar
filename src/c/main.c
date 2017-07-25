@@ -1,4 +1,6 @@
 #include <pebble.h>
+#include <pebble-connection-vibes/connection-vibes.h>
+#include <pebble-hourly-vibes/hourly-vibes.h>
 #include "logging.h"
 #include "time-layer.h"
 #include "date-layer.h"
@@ -55,6 +57,19 @@ static void prv_window_unload(Window *window) {
 
 static void prv_init(void) {
     logf();
+    connection_vibes_init();
+    hourly_vibes_init();
+    uint32_t const pattern[] = { 100 };
+    hourly_vibes_set_pattern((VibePattern) {
+        .durations = pattern,
+        .num_segments = 1
+    });
+
+#ifdef PBL_HEALTH
+    connection_vibes_enable_health(true);
+    hourly_vibes_enable_health(true);
+#endif
+
     s_window = window_create();
     window_set_window_handlers(s_window, (WindowHandlers) {
         .load = prv_window_load,
@@ -66,6 +81,9 @@ static void prv_init(void) {
 static void prv_deinit(void) {
     logf();
     window_destroy(s_window);
+
+    hourly_vibes_deinit();
+    connection_vibes_deinit();
 }
 
 int main(void) {
