@@ -1,9 +1,11 @@
 #include <pebble.h>
 #include "logging.h"
 #include "time-layer.h"
+#include "date-layer.h"
 
 static Window *s_window;
 static TimeLayer *s_time_layer;
+static DateLayer *s_date_layer;
 
 static void prv_update_proc(Layer *this, GContext *ctx) {
     logf();
@@ -24,10 +26,14 @@ static void prv_window_load(Window *window) {
 
     s_time_layer = time_layer_create(GRect(0, 12, bounds.size.w - ACTION_BAR_WIDTH, bounds.size.h - 24));
     layer_add_child(root_layer, s_time_layer);
+
+    s_date_layer = date_layer_create(GRect(bounds.size.w - ACTION_BAR_WIDTH, 0, ACTION_BAR_WIDTH, 58));
+    layer_add_child(root_layer, s_date_layer);
 }
 
 static void prv_window_unload(Window *window) {
     logf();
+    date_layer_destroy(s_date_layer);
     time_layer_destroy(s_time_layer);
 }
 

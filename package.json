@@ -33,6 +33,11 @@
           "type": "raw",
           "name": "FONT_LECO",
           "file": "LECO1976-Regular.ffont"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_CALENDAR",
+          "file": "calendar.pdc"
         }
       ]
     }
