@@ -30,7 +30,7 @@ static void prv_window_load(Window *window) {
     layer_set_update_proc(root_layer, prv_update_proc);
     GRect bounds = layer_get_bounds(root_layer);
 
-    s_time_layer = time_layer_create(GRect(0, 12, bounds.size.w - ACTION_BAR_WIDTH, bounds.size.h - 24));
+    s_time_layer = time_layer_create(GRect(-1, 12, bounds.size.w - ACTION_BAR_WIDTH, bounds.size.h - 24));
     layer_add_child(root_layer, s_time_layer);
 
     int16_t x = bounds.size.w - ACTION_BAR_WIDTH;
