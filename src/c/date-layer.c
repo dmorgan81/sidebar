@@ -24,18 +24,18 @@ static void prv_update_proc(DateLayer *this, GContext *ctx) {
     char s[4];
     strftime(s, sizeof(s), "%b", &data->tick_time);
     strupp(s);
-    graphics_draw_text(ctx, s, font, GRect(0, -3, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
+    graphics_draw_text(ctx, s, font, GRect(0, -4, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
 
     GDrawCommandImage *pdc = gdraw_command_image_create_with_resource(RESOURCE_ID_PDC_CALENDAR);
-    gdraw_command_image_draw(ctx, pdc, GPoint(2, 15));
+    gdraw_command_image_draw(ctx, pdc, GPoint(2, 14));
     gdraw_command_image_destroy(pdc);
 
     snprintf(s, sizeof(s), "%d", data->tick_time.tm_mday);
-    graphics_draw_text(ctx, s, font, GRect(0, 18, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
+    graphics_draw_text(ctx, s, font, GRect(0, 17, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
 
     strftime(s, sizeof(s), "%a", &data->tick_time);
     strupp(s);
-    graphics_draw_text(ctx, s, font, GRect(0, 36, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
+    graphics_draw_text(ctx, s, font, GRect(0, 35, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
 }
 
 static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void *this) {

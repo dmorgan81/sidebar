@@ -38,6 +38,11 @@
           "type": "raw",
           "name": "PDC_CALENDAR",
           "file": "calendar.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_BATTERY",
+          "file": "battery.pdc"
         }
       ]
     }
