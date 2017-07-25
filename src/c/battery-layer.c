@@ -16,7 +16,11 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
     GDrawCommandImage *pdc = gdraw_command_image_create_with_resource(RESOURCE_ID_PDC_BATTERY);
     if (data->charge_state.is_charging) {
         GDrawCommandList *list = gdraw_command_image_get_command_list(pdc);
-        gdraw_command_set_hidden(gdraw_command_list_get_command(list, 2), false);
+        GDrawCommand *cmd = gdraw_command_list_get_command(list, 2);
+    #ifdef PBL_COLOR
+        gdraw_command_set_fill_color(cmd, GColorChromeYellow);
+    #endif
+        gdraw_command_set_hidden(cmd, false);
     }
 
     gdraw_command_image_draw(ctx, pdc, GPoint(2, 2));
@@ -29,7 +33,15 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
         snprintf(s, sizeof(s), "CHG");
     } else {
         uint h = 30 * data->charge_state.charge_percent / 100;
+
+#ifdef PBL_COLOR
+        GColor fill_color = GColorIslamicGreen;
+        if (data->charge_state.charge_percent <= 10) fill_color = GColorRed;
+        else if (data->charge_state.charge_percent <= 30) fill_color = GColorChromeYellow;
+        graphics_context_set_fill_color(ctx, fill_color);
+#else
         graphics_context_set_fill_color(ctx, GColorBlack);
+#endif
         graphics_fill_rect(ctx, GRect(6, 8 + (30 - h), 18, h), 0, GCornerNone);
 
         snprintf(s, sizeof(s), "%d%%", data->charge_state.charge_percent);
@@ -43,7 +55,6 @@ static void prv_battery_state_handler(BatteryChargeState charge_state, void *thi
     logf();
     Data *data = layer_get_data(this);
     memcpy(&data->charge_state, &charge_state, sizeof(BatteryChargeState));
-    if (data->charge_state.charge_percent == 0) data->charge_state.charge_percent = 5;
     layer_mark_dirty(this);
 }
 
