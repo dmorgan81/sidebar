@@ -4,6 +4,9 @@
 #include "logging.h"
 #include "status-layer.h"
 
+#define STATUS_LAYER_CONN_IDX 3
+#define STATUS_LAYER_NO_CONN_IDX 6
+
 typedef struct {
     bool connected;
     EventHandle connection_event_handle;
@@ -21,6 +24,7 @@ static void prv_update_proc(StatusLayer *this, GContext *ctx) {
     Data *data = layer_get_data(this);
     GDrawCommandImage *pdc = gdraw_command_image_create_with_resource(RESOURCE_ID_PDC_STATUS);
     GDrawCommandList *list = gdraw_command_image_get_command_list(pdc);
+    uint32_t num_cmds = gdraw_command_list_get_num_commands(list);
 
     GColor stroke_color = gcolor_legible_over(enamel_get_COLOR_SIDEBAR());
     if (!gcolor_equal(stroke_color, GColorBlack)) {
@@ -29,22 +33,18 @@ static void prv_update_proc(StatusLayer *this, GContext *ctx) {
 
 #ifndef PBL_PLATFORM_APLITE
     if (quiet_time_is_active()) {
-        for (int i = 3; i < 6; i++) {
+        for (uint i = STATUS_LAYER_CONN_IDX; i < num_cmds; i++) {
             gdraw_command_set_hidden(gdraw_command_list_get_command(list, i), true);
         }
-
-        for (int i = 6; i < 9; i++) {
-            gdraw_command_set_hidden(gdraw_command_list_get_command(list, i), false);
-        }
-    }
+    } else
 #endif
 
-    if (!quiet_time_is_active() && !data->connected) {
-        for (int i = 3; i < 6; i++) {
+    if (!data->connected) {
+        for (uint i = STATUS_LAYER_CONN_IDX; i < STATUS_LAYER_NO_CONN_IDX; i++) {
             gdraw_command_set_hidden(gdraw_command_list_get_command(list, i), true);
         }
 
-        for (int i = 9; i < 11; i++) {
+        for (uint i = STATUS_LAYER_NO_CONN_IDX; i < num_cmds; i++) {
             gdraw_command_set_hidden(gdraw_command_list_get_command(list, i), false);
         }
     }
