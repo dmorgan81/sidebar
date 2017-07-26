@@ -4,6 +4,8 @@
 #include "str.h"
 #include "battery-layer.h"
 
+#define BATTERY_LAYER_MARGIN_TOP 14
+
 typedef struct {
     BatteryChargeState charge_state;
     EventHandle battery_state_event_handle;
@@ -20,7 +22,7 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
         gdraw_command_set_hidden(gdraw_command_list_get_command(list, 2), false);
     }
 
-    gdraw_command_image_draw(ctx, pdc, GPoint(2, 15));
+    gdraw_command_image_draw(ctx, pdc, GPoint(2, BATTERY_LAYER_MARGIN_TOP));
     gdraw_command_image_destroy(pdc);
 
     char s[4];
@@ -37,12 +39,12 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
 #else
         graphics_context_set_fill_color(ctx, GColorBlack);
 #endif
-        graphics_fill_rect(ctx, GRect(7 + (18 - w), 19, w, 6), 0, GCornerNone);
+        graphics_fill_rect(ctx, GRect(7 + (18 - w), BATTERY_LAYER_MARGIN_TOP + 4, w, 8), 0, GCornerNone);
 
         snprintf(s, sizeof(s), "%d%%", data->charge_state.charge_percent);
     }
 
-    GRect rect = GRect(0, 28, bounds.size.w, bounds.size.h);
+    GRect rect = GRect(0, BATTERY_LAYER_MARGIN_TOP + 15, bounds.size.w, bounds.size.h);
     OUTLINE_TEXT(ctx, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD), s, rect, GColorBlack, GColorWhite);
 }
 
