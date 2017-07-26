@@ -1,6 +1,7 @@
 #include <pebble.h>
 #include <pebble-events/pebble-events.h>
 #include "logging.h"
+#include "str.h"
 #include "battery-layer.h"
 
 typedef struct {
@@ -22,13 +23,11 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
     gdraw_command_image_draw(ctx, pdc, GPoint(2, 15));
     gdraw_command_image_destroy(pdc);
 
-    GFont font = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD);
     char s[4];
-
     if (data->charge_state.is_charging) {
         snprintf(s, sizeof(s), "CHG");
     } else {
-        uint w = 20 * data->charge_state.charge_percent / 100;
+        uint w = 18 * data->charge_state.charge_percent / 100;
 
 #ifdef PBL_COLOR
         GColor fill_color = GColorIslamicGreen;
@@ -38,13 +37,13 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
 #else
         graphics_context_set_fill_color(ctx, GColorBlack);
 #endif
-        graphics_fill_rect(ctx, GRect(6 + (20 - w), 18, w, 8), 0, GCornerNone);
+        graphics_fill_rect(ctx, GRect(7 + (18 - w), 19, w, 6), 0, GCornerNone);
 
         snprintf(s, sizeof(s), "%d%%", data->charge_state.charge_percent);
     }
 
-    graphics_context_set_text_color(ctx, GColorBlack);
-    graphics_draw_text(ctx, s, font, GRect(0, 27, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
+    GRect rect = GRect(0, 28, bounds.size.w, bounds.size.h);
+    OUTLINE_TEXT(ctx, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD), s, rect, GColorBlack, GColorWhite);
 }
 
 static void prv_battery_state_handler(BatteryChargeState charge_state, void *this) {

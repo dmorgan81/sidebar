@@ -1,7 +1,7 @@
 #include <pebble.h>
 #include <pebble-events/pebble-events.h>
-#include <ctype.h>
 #include "logging.h"
+#include "str.h"
 #include "date-layer.h"
 
 typedef struct {
@@ -9,33 +9,33 @@ typedef struct {
     EventHandle tick_timer_event_handle;
 } Data;
 
-static inline void strupp(char *s) {
-    while ((*s++ = (char) toupper((int) *s)));
-}
-
 static void prv_update_proc(DateLayer *this, GContext *ctx) {
     logf();
     GRect bounds = layer_get_bounds(this);
     Data *data = layer_get_data(this);
-    GFont font = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD);
+    GFont font = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD);
 
     graphics_context_set_text_color(ctx, GColorBlack);
 
     char s[4];
     strftime(s, sizeof(s), "%b", &data->tick_time);
     strupp(s);
-    graphics_draw_text(ctx, s, font, GRect(0, -4, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
+    GRect rect = GRect(0, -2, bounds.size.w, bounds.size.h);
+    OUTLINE_TEXT(ctx, font, s, rect, GColorBlack, GColorWhite);
 
     GDrawCommandImage *pdc = gdraw_command_image_create_with_resource(RESOURCE_ID_PDC_CALENDAR);
     gdraw_command_image_draw(ctx, pdc, GPoint(2, 14));
     gdraw_command_image_destroy(pdc);
 
     snprintf(s, sizeof(s), "%d", data->tick_time.tm_mday);
-    graphics_draw_text(ctx, s, font, GRect(0, 17, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
+    graphics_context_set_text_color(ctx, GColorBlack);
+    graphics_draw_text(ctx, s, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD),
+        GRect(0, 18, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
 
     strftime(s, sizeof(s), "%a", &data->tick_time);
     strupp(s);
-    graphics_draw_text(ctx, s, font, GRect(0, 35, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
+    rect = GRect(0, 39, bounds.size.w, bounds.size.h);
+    OUTLINE_TEXT(ctx, font, s, rect, GColorBlack, GColorWhite);
 }
 
 static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void *this) {
