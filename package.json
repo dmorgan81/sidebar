@@ -32,6 +32,7 @@
     "messageKeys": [
       "APP_READY",
       "LEADING_ZERO",
+      "RIGHT_BAR",
       "COLOR_BACKGROUND",
       "COLOR_SIDEBAR",
       "HOURLY_VIBE",

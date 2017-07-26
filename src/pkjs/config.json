@@ -4,6 +4,12 @@
         "items": [
             {
                 "type": "toggle",
+                "messageKey": "RIGHT_BAR",
+                "label": "Bar Side",
+                "defaultValue": true
+            },
+            {
+                "type": "toggle",
                 "messageKey": "LEADING_ZERO",
                 "label": "Leading Zero",
                 "defaultValue": true
