@@ -7,6 +7,7 @@
   ],
   "private": true,
   "dependencies": {
+    "enamel": "^1.2.5",
     "pebble-connection-vibes": "^1.1.0",
     "pebble-events": "^1.2.0",
     "pebble-fctx": "^1.6.2",
@@ -28,7 +29,17 @@
     "watchapp": {
       "watchface": true
     },
-    "messageKeys": [],
+    "messageKeys": [
+      "APP_READY",
+      "LEADING_ZERO",
+      "COLOR_BACKGROUND",
+      "COLOR_SIDEBAR",
+      "HOURLY_VIBE",
+      "CONNECTION_VIBE",
+      "WIDGET_0",
+      "WIDGET_1",
+      "WIDGET_2"
+    ],
     "resources": {
       "media": [
         {

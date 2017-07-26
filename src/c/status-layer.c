@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include <pebble-events/pebble-events.h>
+#include <enamel.h>
 #include "logging.h"
 #include "status-layer.h"
 
@@ -8,11 +9,23 @@ typedef struct {
     EventHandle connection_event_handle;
 } Data;
 
+static bool prv_cmd_list_iterator_cb(GDrawCommand *cmd, uint32_t index, void *context) {
+    logf();
+    gdraw_command_set_fill_color(cmd, GColorBlack);
+    gdraw_command_set_stroke_color(cmd, GColorWhite);
+    return true;
+}
+
 static void prv_update_proc(StatusLayer *this, GContext *ctx) {
     logf();
     Data *data = layer_get_data(this);
     GDrawCommandImage *pdc = gdraw_command_image_create_with_resource(RESOURCE_ID_PDC_STATUS);
     GDrawCommandList *list = gdraw_command_image_get_command_list(pdc);
+
+    GColor stroke_color = gcolor_legible_over(enamel_get_COLOR_SIDEBAR());
+    if (!gcolor_equal(stroke_color, GColorBlack)) {
+        gdraw_command_list_iterate(list, prv_cmd_list_iterator_cb, NULL);
+    }
 
 #ifndef PBL_PLATFORM_APLITE
     if (quiet_time_is_active()) {

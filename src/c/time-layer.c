@@ -2,6 +2,7 @@
 #include <pebble-events/pebble-events.h>
 #include <pebble-fctx/fctx.h>
 #include <pebble-fctx/ffont.h>
+#include <enamel.h>
 #include "logging.h"
 #include "time-layer.h"
 
@@ -21,7 +22,7 @@ static void prv_update_proc(TimeLayer *this, GContext *ctx) {
     FContext fctx;
     fctx_init_context(&fctx, ctx);
 
-    fctx_set_fill_color(&fctx, GColorBlack);
+    fctx_set_fill_color(&fctx, gcolor_legible_over(enamel_get_COLOR_BACKGROUND()));
     fctx_set_text_em_height(&fctx, font, (bounds.size.h * 5) / 8);
 
 #if PBL_API_EXISTS(unobstructed_area_service_subscribe)
@@ -36,7 +37,8 @@ static void prv_update_proc(TimeLayer *this, GContext *ctx) {
     fctx_set_offset(&fctx, FPointI(offset.x + bounds.size.w, offset.y));
 
     char s[3];
-    strftime(s, sizeof(s), clock_is_24h_style() ? "%H" : "%I", &data->tick_time);
+    if (enamel_get_LEADING_ZERO()) strftime(s, sizeof(s), clock_is_24h_style() ? "%H" : "%I", &data->tick_time);
+    else strftime(s, sizeof(s), clock_is_24h_style() ? "%k" : "%l", &data->tick_time);
     fctx_begin_fill(&fctx);
     fctx_draw_string(&fctx, s, font, GTextAlignmentRight, FTextAnchorTop);
     fctx_end_fill(&fctx);

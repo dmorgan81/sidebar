@@ -1,0 +1,143 @@
+[
+    {
+        "type": "section",
+        "items": [
+            {
+                "type": "toggle",
+                "messageKey": "LEADING_ZERO",
+                "label": "Leading Zero",
+                "defaultValue": true
+            },
+            {
+                "type": "toggle",
+                "messageKey": "HOURLY_VIBE",
+                "label": "Vibrate on the Hour",
+                "defaultValue": true
+            },
+            {
+                "type": "radiogroup",
+                "messageKey": "CONNECTION_VIBE",
+                "label": "Bluetooth Vibrate",
+                "defaultValue": "1",
+                "options": [
+                    {
+                        "label": "On Disconnect",
+                        "value": "1"
+                    },
+                    {
+                        "label": "On Disconnect & Reconnect",
+                        "value": "2"
+                    },
+                    {
+                        "label": "Neither",
+                        "value": "0"
+                    }
+                ]
+            },
+            {
+                "type": "color",
+                "messageKey": "COLOR_BACKGROUND",
+                "label": "Background Color",
+                "defaultValue": "FFFFFF",
+                "sunlight": false,
+                "allowGray": true
+            },
+            {
+                "type": "color",
+                "messageKey": "COLOR_SIDEBAR",
+                "label": "Sidebar Color",
+                "defaultValue": "00AAFF",
+                "sunlight": false,
+                "allowGray": true
+            }
+        ]
+    },
+    {
+        "type": "section",
+        "items": [
+            {
+                "type": "heading",
+                "defaultValue": "Widgets"
+            },
+            {
+                "type": "select",
+                "messageKey": "WIDGET_0",
+                "label": "First Position",
+                "defaultValue": "1",
+                "options": [
+                    {
+                        "label": "None",
+                        "value": "0"
+                    },
+                    {
+                        "label": "Date",
+                        "value": "1"
+                    },
+                    {
+                        "label": "Status",
+                        "value": "2"
+                    },
+                    {
+                        "label": "Battery",
+                        "value": "3"
+                    }
+                ],
+                "group": "widget"
+            },
+            {
+                "type": "select",
+                "messageKey": "WIDGET_1",
+                "label": "Second Position",
+                "defaultValue": "2",
+                "options": [
+                    {
+                        "label": "None",
+                        "value": "0"
+                    },
+                    {
+                        "label": "Date",
+                        "value": "1"
+                    },
+                    {
+                        "label": "Status",
+                        "value": "2"
+                    },
+                    {
+                        "label": "Battery",
+                        "value": "3"
+                    }
+                ],
+                "group": "widget"
+            },
+            {
+                "type": "select",
+                "messageKey": "WIDGET_2",
+                "label": "Third Position",
+                "defaultValue": "3",
+                "options": [
+                    {
+                        "label": "None",
+                        "value": "0"
+                    },
+                    {
+                        "label": "Date",
+                        "value": "1"
+                    },
+                    {
+                        "label": "Status",
+                        "value": "2"
+                    },
+                    {
+                        "label": "Battery",
+                        "value": "3"
+                    }
+                ],
+                "group": "widget"
+            }
+        ]
+    },
+    {
+        "type": "submit",
+        "defaultValue": "Save"
+    }
+]
