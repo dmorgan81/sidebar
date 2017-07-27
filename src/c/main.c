@@ -125,7 +125,7 @@ static void prv_window_load(Window *window) {
     prv_settings_handler(NULL);
     s_settings_event_handle = enamel_settings_received_subscribe(prv_settings_handler, NULL);
 
-    logi("%d / %d", heap_bytes_used(), heap_bytes_free());
+    logd("%d / %d", heap_bytes_used(), heap_bytes_free());
 }
 
 static void prv_window_unload(Window *window) {
