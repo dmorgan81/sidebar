@@ -11,13 +11,24 @@ typedef struct {
     EventHandle tick_timer_event_handle;
 } Data;
 
+typedef struct {
+    uint32_t resource_id;
+    int16_t y_offset;
+} FontData;
+
+static FontData s_font_data[] = {
+     { RESOURCE_ID_FONT_LECO, 0 },
+     { RESOURCE_ID_FONT_ROBOTO, -10 }
+};
+
 static void prv_update_proc(TimeLayer *this, GContext *ctx) {
     logf();
     GRect bounds = layer_get_unobstructed_bounds(this);
     GRect frame = layer_get_frame(this);
     GPoint offset = gpoint_add(frame.origin, bounds.origin);
     Data *data = layer_get_data(this);
-    FFont *font = ffont_create_from_resource(RESOURCE_ID_FONT_LECO);
+    FontData font_data = s_font_data[atoi(enamel_get_FONT())];
+    FFont *font = ffont_create_from_resource(font_data.resource_id);
 
     FContext fctx;
     fctx_init_context(&fctx, ctx);
@@ -34,7 +45,7 @@ static void prv_update_proc(TimeLayer *this, GContext *ctx) {
     fctx_set_pivot(&fctx, pivot);
 #endif
 
-    fctx_set_offset(&fctx, FPointI(offset.x + bounds.size.w, offset.y));
+    fctx_set_offset(&fctx, FPointI(offset.x + bounds.size.w, offset.y + font_data.y_offset));
 
     char s[3];
     if (enamel_get_LEADING_ZERO()) strftime(s, sizeof(s), clock_is_24h_style() ? "%H" : "%I", &data->tick_time);

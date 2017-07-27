@@ -3,6 +3,26 @@
         "type": "section",
         "items": [
             {
+                "type": "heading",
+                "defaultValue": "General"
+            },
+            {
+                "type": "radiogroup",
+                "messageKey": "FONT",
+                "label": "Font",
+                "defaultValue": "0",
+                "options": [
+                    {
+                        "label": "LECO",
+                        "value": "0"
+                    },
+                    {
+                        "label": "Roboto",
+                        "value": "1"
+                    }
+                ]
+            },
+            {
                 "type": "toggle",
                 "messageKey": "RIGHT_BAR",
                 "label": "Bar Side",
