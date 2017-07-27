@@ -19,6 +19,10 @@
                     {
                         "label": "Roboto",
                         "value": "1"
+                    },
+                    {
+                        "label": "Lato",
+                        "value": "2"
                     }
                 ]
             },

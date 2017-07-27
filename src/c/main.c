@@ -66,7 +66,7 @@ static void prv_settings_handler(void *context) {
     hourly_vibes_set_enabled(enamel_get_HOURLY_VIBE());
 
     GRect frame = layer_get_frame(s_time_layer);
-    frame.origin.x = (enamel_get_RIGHT_BAR() ? 0 : WIDGET_WIDTH) - 1;
+    frame.origin.x = enamel_get_RIGHT_BAR() ? 0 : WIDGET_WIDTH;
     layer_set_frame(s_time_layer, frame);
 
     Layer *root_layer = window_get_root_layer(s_window);
@@ -115,7 +115,7 @@ static void prv_window_load(Window *window) {
     layer_set_update_proc(root_layer, prv_update_proc);
     GRect bounds = layer_get_bounds(root_layer);
 
-    s_time_layer = time_layer_create(GRect(-1, 12, bounds.size.w - ACTION_BAR_WIDTH, bounds.size.h - 24));
+    s_time_layer = time_layer_create(GRect(0, 12, bounds.size.w - ACTION_BAR_WIDTH, bounds.size.h - 24));
     layer_add_child(root_layer, s_time_layer);
 
     for (uint i = 0; i < ARRAY_LENGTH(s_widgets); i++) {

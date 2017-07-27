@@ -56,6 +56,11 @@
         },
         {
           "type": "raw",
+          "name": "FONT_LATO",
+          "file": "Lato-Regular.ffont"
+        },
+        {
+          "type": "raw",
           "name": "PDC_CALENDAR",
           "file": "calendar.pdc"
         },

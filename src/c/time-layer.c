@@ -13,12 +13,14 @@ typedef struct {
 
 typedef struct {
     uint32_t resource_id;
+    int16_t x_offset;
     int16_t y_offset;
 } FontData;
 
 static FontData s_font_data[] = {
-     { RESOURCE_ID_FONT_LECO, 0 },
-     { RESOURCE_ID_FONT_ROBOTO, -10 }
+     { RESOURCE_ID_FONT_LECO, -1, 0 },
+     { RESOURCE_ID_FONT_ROBOTO, -3, -10 },
+     { RESOURCE_ID_FONT_LATO, -4, -10 }
 };
 
 static void prv_update_proc(TimeLayer *this, GContext *ctx) {
@@ -45,7 +47,7 @@ static void prv_update_proc(TimeLayer *this, GContext *ctx) {
     fctx_set_pivot(&fctx, pivot);
 #endif
 
-    fctx_set_offset(&fctx, FPointI(offset.x + bounds.size.w, offset.y + font_data.y_offset));
+    fctx_set_offset(&fctx, FPointI(offset.x + bounds.size.w + font_data.x_offset, offset.y + font_data.y_offset));
 
     char s[3];
     if (enamel_get_LEADING_ZERO()) strftime(s, sizeof(s), clock_is_24h_style() ? "%H" : "%I", &data->tick_time);
@@ -54,7 +56,7 @@ static void prv_update_proc(TimeLayer *this, GContext *ctx) {
     fctx_draw_string(&fctx, s, font, GTextAlignmentRight, FTextAnchorTop);
     fctx_end_fill(&fctx);
 
-    fctx_set_offset(&fctx, FPointI(offset.x + bounds.size.w, offset.y + bounds.size.h));
+    fctx_set_offset(&fctx, FPointI(offset.x + bounds.size.w + font_data.x_offset, offset.y + bounds.size.h));
 
     strftime(s, sizeof(s), "%M", &data->tick_time);
     fctx_begin_fill(&fctx);
