@@ -4,123 +4,44 @@
 #include <pebble-hourly-vibes/hourly-vibes.h>
 #include <enamel.h>
 #include "logging.h"
+#include "sidebar-layer.h"
 #include "time-layer.h"
-#include "date-layer.h"
-#include "status-layer.h"
-#include "battery-layer.h"
-
-#define WIDGET_WIDTH ACTION_BAR_WIDTH
-#define WIDGET_HEIGHT 56
-
-typedef enum {
-    WidgetTypeNone = 0,
-    WidgetTypeDate,
-    WidgetTypeStatus,
-    WidgetTypeBattery,
-} WidgetType;
-
-typedef struct {
-    WidgetType type;
-    Layer *layer;
-} Widget;
-
-static Widget *s_widgets[3];
-static const char* (*s_widget_settings[])() = {
-    enamel_get_WIDGET_0,
-    enamel_get_WIDGET_1,
-    enamel_get_WIDGET_2
-};
 
 static Window *s_window;
+static SidebarLayer *s_sidebar_layer;
 static TimeLayer *s_time_layer;
 
 static EventHandle s_settings_event_handle;
 
-static Widget *prv_widget_create(WidgetType type) {
-    logf();
-    Widget *this = malloc(sizeof(Widget));
-    this->type = type;
-    switch (type) {
-        case WidgetTypeDate: this->layer = date_layer_create(GRect(0, 0, WIDGET_WIDTH, WIDGET_HEIGHT)); break;
-        case WidgetTypeStatus: this->layer = status_layer_create(GRect(0, 0, WIDGET_WIDTH, WIDGET_HEIGHT)); break;
-        case WidgetTypeBattery: this->layer = battery_layer_create(GRect(0, 0, WIDGET_WIDTH, WIDGET_HEIGHT)); break;
-        default: this->layer = NULL; break;
-    }
-    return this;
-}
-
-static void prv_widget_destroy(Widget *this) {
-    logf();
-    switch(this->type) {
-        case WidgetTypeDate: date_layer_destroy(this->layer); break;
-        case WidgetTypeStatus: status_layer_destroy(this->layer); break;
-        case WidgetTypeBattery: battery_layer_destroy(this->layer); break;
-        default: break;
-    }
-    free(this);
-}
-
 static void prv_settings_handler(void *context) {
     logf();
+    Layer *root_layer = window_get_root_layer(s_window);
+    GRect bounds = layer_get_bounds(root_layer);
+
     connection_vibes_set_state(atoi(enamel_get_CONNECTION_VIBE()));
     hourly_vibes_set_enabled(enamel_get_HOURLY_VIBE());
 
-    GRect frame = layer_get_frame(s_time_layer);
-    frame.origin.x = enamel_get_RIGHT_BAR() ? 0 : WIDGET_WIDTH;
+    GRect frame = layer_get_frame(s_sidebar_layer);
+    frame.origin.x = enamel_get_RIGHT_BAR() ? bounds.size.w - ACTION_BAR_WIDTH : 0;
+    layer_set_frame(s_sidebar_layer, frame);
+
+    frame = layer_get_frame(s_time_layer);
+    frame.origin.x = enamel_get_RIGHT_BAR() ? 0 : ACTION_BAR_WIDTH;
     layer_set_frame(s_time_layer, frame);
 
-    Layer *root_layer = window_get_root_layer(s_window);
-    GRect bounds = layer_get_bounds(root_layer);
-    for (uint i = 0; i < ARRAY_LENGTH(s_widgets); i++) {
-        Widget *widget = s_widgets[i];
-        WidgetType type = atoi(s_widget_settings[i]());
-        if (type != widget->type) {
-            if (widget->type != WidgetTypeNone) layer_remove_from_parent(widget->layer);
-            prv_widget_destroy(widget);
-
-            widget = prv_widget_create(type);
-            s_widgets[i] = widget;
-
-            if (widget->type == WidgetTypeNone) continue;
-
-            layer_add_child(root_layer, widget->layer);
-        }
-
-        if (widget->type == WidgetTypeNone) continue;
-
-        Layer *layer = widget->layer;
-        GRect frame = layer_get_frame(layer);
-        frame.origin.x = enamel_get_RIGHT_BAR() ? bounds.size.w - WIDGET_WIDTH : 0;
-        frame.origin.y = i * WIDGET_HEIGHT;
-        layer_set_frame(layer, frame);
-    }
-
-    layer_mark_dirty(window_get_root_layer(s_window));
-}
-
-static void prv_update_proc(Layer *this, GContext *ctx) {
-    logf();
-    GRect bounds = layer_get_bounds(this);
-
-    graphics_context_set_fill_color(ctx, enamel_get_COLOR_BACKGROUND());
-    graphics_fill_rect(ctx, bounds, 0, GCornerNone);
-
-    graphics_context_set_fill_color(ctx, enamel_get_COLOR_SIDEBAR());
-    graphics_fill_rect(ctx, GRect((enamel_get_RIGHT_BAR() ? bounds.size.w - ACTION_BAR_WIDTH : 0), 0, ACTION_BAR_WIDTH, bounds.size.h), 0, GCornerNone);
+    window_set_background_color(s_window, enamel_get_COLOR_BACKGROUND());
 }
 
 static void prv_window_load(Window *window) {
     logf();
     Layer *root_layer = window_get_root_layer(window);
-    layer_set_update_proc(root_layer, prv_update_proc);
     GRect bounds = layer_get_bounds(root_layer);
+
+    s_sidebar_layer = sidebar_layer_create(GRect(bounds.size.w - ACTION_BAR_WIDTH, 0, ACTION_BAR_WIDTH, bounds.size.h));
+    layer_add_child(root_layer, s_sidebar_layer);
 
     s_time_layer = time_layer_create(GRect(0, 12, bounds.size.w - ACTION_BAR_WIDTH, bounds.size.h - 24));
     layer_add_child(root_layer, s_time_layer);
-
-    for (uint i = 0; i < ARRAY_LENGTH(s_widgets); i++) {
-        s_widgets[i] = prv_widget_create(WidgetTypeNone);
-    }
 
     prv_settings_handler(NULL);
     s_settings_event_handle = enamel_settings_received_subscribe(prv_settings_handler, NULL);
@@ -131,12 +52,8 @@ static void prv_window_load(Window *window) {
 static void prv_window_unload(Window *window) {
     logf();
     enamel_settings_received_unsubscribe(s_settings_event_handle);
-
-    for (uint i = 0; i < ARRAY_LENGTH(s_widgets); i++) {
-        prv_widget_destroy(s_widgets[i]);
-    }
-
     time_layer_destroy(s_time_layer);
+    sidebar_layer_destroy(s_sidebar_layer);
 }
 
 static void prv_init(void) {
