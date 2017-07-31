@@ -47,7 +47,7 @@ static void prv_update_proc(DateLayer *this, GContext *ctx) {
 
     strftime(s, sizeof(s), "%a", &data->tick_time);
     strupp(s);
-    rect = GRect(0, 39, bounds.size.w, bounds.size.h);
+    rect = GRect(0, 40, bounds.size.w, bounds.size.h);
     OUTLINE_TEXT(ctx, font, s, rect, stroke_color, text_color);
 }
 

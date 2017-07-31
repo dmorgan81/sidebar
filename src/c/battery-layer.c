@@ -53,12 +53,12 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
 #else
         graphics_context_set_fill_color(ctx, stroke_color);
 #endif
-        graphics_fill_rect(ctx, GRect(7 + (18 - w), BATTERY_LAYER_MARGIN_TOP + 4, w, 8), 0, GCornerNone);
+        graphics_fill_rect(ctx, GRect(7 + (18 - w), BATTERY_LAYER_MARGIN_TOP + 4, w, 9), 0, GCornerNone);
 
         snprintf(s, sizeof(s), "%d%%", data->charge_state.charge_percent);
     }
 
-    GRect rect = GRect(0, BATTERY_LAYER_MARGIN_TOP + 15, bounds.size.w, bounds.size.h);
+    GRect rect = GRect(0, BATTERY_LAYER_MARGIN_TOP + 16, bounds.size.w, bounds.size.h);
     OUTLINE_TEXT(ctx, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD), s, rect, stroke_color, gcolor_legible_over(stroke_color));
 }
 
