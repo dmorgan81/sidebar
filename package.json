@@ -51,11 +51,6 @@
         },
         {
           "type": "raw",
-          "name": "FONT_ROBOTO",
-          "file": "RobotoMono-Regular.ffont"
-        },
-        {
-          "type": "raw",
           "name": "FONT_LATO",
           "file": "Lato-Regular.ffont"
         },

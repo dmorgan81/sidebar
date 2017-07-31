@@ -19,7 +19,6 @@ typedef struct {
 
 static FontData s_font_data[] = {
      { RESOURCE_ID_FONT_LECO, -1, 0 },
-     { RESOURCE_ID_FONT_ROBOTO, -3, -10 },
      { RESOURCE_ID_FONT_LATO, -4, -10 }
 };
 

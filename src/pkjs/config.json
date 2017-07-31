@@ -17,12 +17,8 @@
                         "value": "0"
                     },
                     {
-                        "label": "Roboto",
-                        "value": "1"
-                    },
-                    {
                         "label": "Lato",
-                        "value": "2"
+                        "value": "1"
                     }
                 ]
             },
