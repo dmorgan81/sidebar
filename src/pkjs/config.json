@@ -110,6 +110,10 @@
                     {
                         "label": "Battery",
                         "value": "3"
+                    },
+                    {
+                        "label": "Seconds",
+                        "value": "4"
                     }
                 ],
                 "group": "widget"
@@ -135,6 +139,10 @@
                     {
                         "label": "Battery",
                         "value": "3"
+                    },
+                    {
+                        "label": "Seconds",
+                        "value": "4"
                     }
                 ],
                 "group": "widget"
@@ -160,6 +168,10 @@
                     {
                         "label": "Battery",
                         "value": "3"
+                    },
+                    {
+                        "label": "Seconds",
+                        "value": "4"
                     }
                 ],
                 "group": "widget"

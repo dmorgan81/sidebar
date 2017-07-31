@@ -5,15 +5,22 @@
 #include "date-layer.h"
 #include "status-layer.h"
 #include "battery-layer.h"
+#include "seconds-layer.h"
 
 #define WIDGET_WIDTH ACTION_BAR_WIDTH
 #define WIDGET_HEIGHT 56
+
+static const GRect WIDGET_RECT = {
+    { 0, 0 },
+    { WIDGET_WIDTH, WIDGET_HEIGHT }
+};
 
 typedef enum {
     WidgetTypeNone = 0,
     WidgetTypeDate,
     WidgetTypeStatus,
     WidgetTypeBattery,
+    WidgetTypeSeconds,
 } WidgetType;
 
 typedef struct {
@@ -43,9 +50,10 @@ static Widget *prv_widget_create(WidgetType type) {
     Widget *this = malloc(sizeof(Widget));
     this->type = type;
     switch (type) {
-        case WidgetTypeDate: this->layer = date_layer_create(GRect(0, 0, WIDGET_WIDTH, WIDGET_HEIGHT)); break;
-        case WidgetTypeStatus: this->layer = status_layer_create(GRect(0, 0, WIDGET_WIDTH, WIDGET_HEIGHT)); break;
-        case WidgetTypeBattery: this->layer = battery_layer_create(GRect(0, 0, WIDGET_WIDTH, WIDGET_HEIGHT)); break;
+        case WidgetTypeDate: this->layer = date_layer_create(WIDGET_RECT); break;
+        case WidgetTypeStatus: this->layer = status_layer_create(WIDGET_RECT); break;
+        case WidgetTypeBattery: this->layer = battery_layer_create(WIDGET_RECT); break;
+        case WidgetTypeSeconds: this->layer = seconds_layer_create(WIDGET_RECT); break;
         default: this->layer = NULL; break;
     }
     return this;
@@ -57,6 +65,7 @@ static void prv_widget_destroy(Widget *this) {
         case WidgetTypeDate: date_layer_destroy(this->layer); break;
         case WidgetTypeStatus: status_layer_destroy(this->layer); break;
         case WidgetTypeBattery: battery_layer_destroy(this->layer); break;
+        case WidgetTypeSeconds: seconds_layer_destroy(this->layer); break;
         default: break;
     }
     free(this);
