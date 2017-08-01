@@ -6,6 +6,7 @@
 #include "status-layer.h"
 #include "battery-layer.h"
 #include "seconds-layer.h"
+#include "steps-layer.h"
 
 #define WIDGET_WIDTH ACTION_BAR_WIDTH
 #define WIDGET_HEIGHT 56
@@ -21,6 +22,9 @@ typedef enum {
     WidgetTypeStatus,
     WidgetTypeBattery,
     WidgetTypeSeconds,
+#ifdef PBL_HEALTH
+    WidgetTypeSteps,
+#endif
 } WidgetType;
 
 typedef struct {
@@ -54,6 +58,9 @@ static Widget *prv_widget_create(WidgetType type) {
         case WidgetTypeStatus: this->layer = status_layer_create(WIDGET_RECT); break;
         case WidgetTypeBattery: this->layer = battery_layer_create(WIDGET_RECT); break;
         case WidgetTypeSeconds: this->layer = seconds_layer_create(WIDGET_RECT); break;
+#ifdef PBL_HEALTH
+        case WidgetTypeSteps: this->layer = steps_layer_create(WIDGET_RECT); break;
+#endif
         default: this->layer = NULL; break;
     }
     return this;
@@ -66,6 +73,9 @@ static void prv_widget_destroy(Widget *this) {
         case WidgetTypeStatus: status_layer_destroy(this->layer); break;
         case WidgetTypeBattery: battery_layer_destroy(this->layer); break;
         case WidgetTypeSeconds: seconds_layer_destroy(this->layer); break;
+#ifdef PBL_HEALTH
+        case WidgetTypeSteps: steps_layer_destroy(this->layer); break;
+#endif
         default: break;
     }
     free(this);

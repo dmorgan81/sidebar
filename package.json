@@ -68,6 +68,15 @@
           "type": "raw",
           "name": "PDC_STATUS",
           "file": "status.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_STEPS",
+          "file": "steps.pdc",
+          "targetPlatforms": [
+            "basalt",
+            "diorite"
+          ]
         }
       ]
     }
