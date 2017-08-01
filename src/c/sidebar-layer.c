@@ -1,4 +1,5 @@
 #include <pebble.h>
+#include <pebble-events/pebble-events.h>
 #include <enamel.h>
 #include "logging.h"
 #include "sidebar-layer.h"
@@ -40,7 +41,9 @@ static const char* (*s_widget_settings[])() = {
 
 typedef struct {
     Widget *widgets[3];
+    StatusLayer *status_layer;
     EventHandle settings_event_handle;
+    EventHandle connection_event_handle;
 } Data;
 
 static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
@@ -81,6 +84,17 @@ static void prv_widget_destroy(Widget *this) {
     free(this);
 }
 
+static void prv_connection_handler(bool connected, void *this) {
+    logf();
+    Data *data = layer_get_data(this);
+    if (data->status_layer != NULL) {
+        layer_set_hidden(data->status_layer, connected);
+        Widget *widget = data->widgets[1];
+        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, !connected);
+    }
+    layer_mark_dirty(this);
+}
+
 static void prv_settings_handler(void *this) {
     logf();
     Data *data = layer_get_data(this);
@@ -108,6 +122,23 @@ static void prv_settings_handler(void *this) {
         layer_set_frame(layer, frame);
     }
 
+    WidgetType top_type = atoi(enamel_get_WIDGET_0());
+    WidgetType mid_type = atoi(enamel_get_WIDGET_1());
+    WidgetType bot_type = atoi(enamel_get_WIDGET_2());
+    bool have_status = (top_type == WidgetTypeStatus || mid_type == WidgetTypeStatus || bot_type == WidgetTypeStatus);
+
+    if (have_status && data->status_layer != NULL) {
+        layer_remove_from_parent(data->status_layer);
+        status_layer_destroy(data->status_layer);
+        data->status_layer = NULL;
+        Widget *widget = data->widgets[1];
+        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, false);
+    } else if (!have_status && data->status_layer == NULL) {
+        data->status_layer = status_layer_create(GRect(0, WIDGET_HEIGHT, WIDGET_WIDTH, WIDGET_HEIGHT));
+        layer_add_child(this, data->status_layer);
+        prv_connection_handler(connection_service_peek_pebble_app_connection(), this);
+    }
+
     layer_mark_dirty(this);
 }
 
@@ -123,6 +154,9 @@ SidebarLayer *sidebar_layer_create(GRect frame) {
 
     prv_settings_handler(this);
     data->settings_event_handle = enamel_settings_received_subscribe(prv_settings_handler, this);
+    data->connection_event_handle = events_connection_service_subscribe_context((EventConnectionHandlers) {
+        .pebble_app_connection_handler = prv_connection_handler
+    }, this);
 
     return this;
 }
@@ -130,7 +164,9 @@ SidebarLayer *sidebar_layer_create(GRect frame) {
 void sidebar_layer_destroy(SidebarLayer *this) {
     logf();
     Data *data = layer_get_data(this);
+    events_connection_service_unsubscribe(data->connection_event_handle);
     enamel_settings_received_unsubscribe(data->settings_event_handle);
+    if (data->status_layer != NULL) status_layer_destroy(data->status_layer);
     for (uint i = 0; i < ARRAY_LENGTH(data->widgets); i++) {
         prv_widget_destroy(data->widgets[i]);
     }
