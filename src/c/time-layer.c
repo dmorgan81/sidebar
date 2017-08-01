@@ -31,6 +31,10 @@ static void prv_update_proc(TimeLayer *this, GContext *ctx) {
     FontData font_data = s_font_data[atoi(enamel_get_FONT())];
     FFont *font = ffont_create_from_resource(font_data.resource_id);
 
+#ifdef PBL_COLOR
+    fctx_enable_aa(font_data.resource_id != RESOURCE_ID_FONT_LECO);
+#endif
+
     FContext fctx;
     fctx_init_context(&fctx, ctx);
 
