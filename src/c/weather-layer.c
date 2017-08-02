@@ -1,4 +1,5 @@
 #include <pebble.h>
+#include <pdc-transform/pdc-transform.h>
 #include <enamel.h>
 #include "logging.h"
 #include "str.h"
@@ -12,13 +13,6 @@ typedef struct {
     GenericWeatherInfo info;
     EventHandle weather_event_handle;
 } Data;
-
-static bool prv_cmd_list_iterator_cb(GDrawCommand *cmd, uint32_t index, void *context) {
-    logf();
-    gdraw_command_set_fill_color(cmd, GColorBlack);
-    gdraw_command_set_stroke_color(cmd, GColorWhite);
-    return true;
-}
 
 static void prv_update_proc(WeatherLayer *this, GContext *ctx) {
     logf();
@@ -60,7 +54,7 @@ static void prv_update_proc(WeatherLayer *this, GContext *ctx) {
 
     GDrawCommandImage *pdc = gdraw_command_image_create_with_resource(resource_id);
     if (!gcolor_equal(stroke_color, GColorBlack)) {
-        gdraw_command_list_iterate(gdraw_command_image_get_command_list(pdc), prv_cmd_list_iterator_cb, NULL);
+        pdc_transform_recolor_image(pdc, GColorBlack, GColorWhite);
     }
 
     gdraw_command_image_draw(ctx, pdc, GPoint(3, WEATHER_LAYER_MARGIN_TOP));

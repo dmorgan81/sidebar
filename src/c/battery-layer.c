@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include <pebble-events/pebble-events.h>
+#include <pdc-transform/pdc-transform.h>
 #include <enamel.h>
 #include "logging.h"
 #include "str.h"
@@ -12,13 +13,6 @@ typedef struct {
     EventHandle battery_state_event_handle;
 } Data;
 
-static bool prv_cmd_list_iterator_cb(GDrawCommand *cmd, uint32_t index, void *context) {
-    logf();
-    gdraw_command_set_fill_color(cmd, GColorBlack);
-    gdraw_command_set_stroke_color(cmd, GColorWhite);
-    return true;
-}
-
 static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
     logf();
     GRect bounds = layer_get_bounds(this);
@@ -29,7 +23,7 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
 
     GColor stroke_color = gcolor_legible_over(enamel_get_COLOR_SIDEBAR());
     if (!gcolor_equal(stroke_color, GColorBlack)) {
-        gdraw_command_list_iterate(list, prv_cmd_list_iterator_cb, NULL);
+        pdc_transform_recolor_image(pdc, GColorBlack, GColorWhite);
     }
 
     if (data->charge_state.is_charging) {
