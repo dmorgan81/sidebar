@@ -24,7 +24,7 @@ static void prv_update_proc(DateLayer *this, GContext *ctx) {
     strftime(s, sizeof(s), "%b", &data->tick_time);
     strupp(s);
     GRect rect = GRect(0, -2, bounds.size.w, bounds.size.h);
-    OUTLINE_TEXT(ctx, font, s, rect, stroke_color, text_color);
+    graphics_draw_outline_text(ctx, font, s, rect, stroke_color, text_color);
 
     GDrawCommandImage *pdc = gdraw_command_image_create_with_resource(RESOURCE_ID_PDC_CALENDAR);
     if (!gcolor_equal(stroke_color, GColorBlack)) {
@@ -42,7 +42,7 @@ static void prv_update_proc(DateLayer *this, GContext *ctx) {
     strftime(s, sizeof(s), "%a", &data->tick_time);
     strupp(s);
     rect = GRect(0, 40, bounds.size.w, bounds.size.h);
-    OUTLINE_TEXT(ctx, font, s, rect, stroke_color, text_color);
+    graphics_draw_outline_text(ctx, font, s, rect, stroke_color, text_color);
 }
 
 static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void *this) {

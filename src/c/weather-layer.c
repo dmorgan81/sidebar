@@ -71,7 +71,7 @@ static void prv_update_proc(WeatherLayer *this, GContext *ctx) {
         snprintf(s, sizeof(s), "??");
     }
     GRect rect = GRect(0, WEATHER_LAYER_MARGIN_TOP + 22, bounds.size.w, bounds.size.h);
-    OUTLINE_TEXT(ctx, font, s, rect, stroke_color, text_color);
+    graphics_draw_outline_text(ctx, font, s, rect, stroke_color, text_color);
 }
 
 static void prv_weather_handler(GenericWeatherInfo *info, GenericWeatherStatus status, void *this) {

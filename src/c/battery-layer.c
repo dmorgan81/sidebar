@@ -53,7 +53,7 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
     }
 
     GRect rect = GRect(0, BATTERY_LAYER_MARGIN_TOP + 16, bounds.size.w, bounds.size.h);
-    OUTLINE_TEXT(ctx, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD), s, rect, stroke_color, gcolor_legible_over(stroke_color));
+    graphics_draw_outline_text(ctx, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD), s, rect, stroke_color, gcolor_legible_over(stroke_color));
 }
 
 static void prv_battery_state_handler(BatteryChargeState charge_state, void *this) {

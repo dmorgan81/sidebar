@@ -22,7 +22,7 @@ static void prv_update_proc(SecondsLayer *this, GContext *ctx) {
     char s[4];
     snprintf(s, sizeof(s), ":%02d", data->tm_sec);
     GRect rect = GRect(0, 9, bounds.size.w, bounds.size.h);
-    OUTLINE_TEXT(ctx, font, s, rect, stroke_color, text_color);
+    graphics_draw_outline_text(ctx, font, s, rect, stroke_color, text_color);
 }
 
 static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void *this) {
