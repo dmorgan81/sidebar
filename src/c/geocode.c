@@ -1,3 +1,4 @@
+#ifndef PBL_PLATFORM_APLITE
 #include <pebble.h>
 #include <pebble-events/pebble-events.h>
 #include <pebble-geocode-mapquest/pebble-geocode-mapquest.h>
@@ -89,3 +90,4 @@ void events_geocode_unsubscribe(EventHandle handle) {
     free(linked_list_get(s_handler_list, index));
     linked_list_remove(s_handler_list, index);
 }
+#endif

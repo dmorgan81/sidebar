@@ -27,7 +27,6 @@ static LinkedRoot *s_handler_list;
 static uint16_t s_interval;
 static const char *s_api_key;
 static GenericWeatherProvider s_provider;
-static bool s_use_gps;
 
 static bool s_connected;
 static bool s_ready = false;
@@ -38,8 +37,11 @@ static EventHandle s_app_message_event_handle;
 
 static AppTimer *s_timer;
 
+#ifndef PBL_PLATFORM_APLITE
+static bool s_use_gps;
 static EventHandle s_geocode_event_handle;
 static char s_location_name[GEOCODE_MAPQUEST_MAX_LOCATION_LEN];
+#endif
 
 static void cancel_timer(void) {
     logf();
@@ -93,6 +95,7 @@ static void pebble_app_connection_handler(bool connected) {
     s_connected = connected;
 }
 
+#ifndef PBL_PLATFORM_APLITE
 static void geocode_handler(GeocodeMapquestCoordinates *coordinates, GeocodeMapquestStatus status, void *context) {
     logf();
     if (status == GeocodeMapquestStatusAvailable) {
@@ -111,14 +114,17 @@ static void geocode_handler(GeocodeMapquestCoordinates *coordinates, GeocodeMapq
         }
     }
 }
+#endif
 
 static void settings_handler(void *context) {
     logf();
     const char *api_key = enamel_get_WEATHER_KEY();
     GenericWeatherProvider provider = atoi(enamel_get_WEATHER_PROVIDER());
     uint32_t interval = atoi(enamel_get_WEATHER_INTERVAL()) * SECONDS_PER_MINUTE;
+#ifndef PBL_PLATFORM_APLITE
     bool use_gps = enamel_get_WEATHER_USE_GPS();
     const char *location_name = enamel_get_WEATHER_LOCATION_NAME();
+#endif
     bool fetch_weather = false;
 
     if (strcmp(api_key, s_api_key) != 0) {
@@ -138,6 +144,7 @@ static void settings_handler(void *context) {
         fetch_weather = true;
     }
 
+#ifndef PBL_PLATFORM_APLITE
     if (use_gps != s_use_gps || strcmp(location_name, s_location_name) != 0) {
         s_use_gps = use_gps;
         strncpy(s_location_name, location_name, sizeof(s_location_name));
@@ -149,6 +156,7 @@ static void settings_handler(void *context) {
             fetch_weather = false;
         }
     }
+#endif
 
     if (fetch_weather) {
         cancel_timer();
@@ -177,16 +185,21 @@ void weather_init(void) {
     s_interval = atoi(enamel_get_WEATHER_INTERVAL()) * SECONDS_PER_MINUTE;
     s_api_key = enamel_get_WEATHER_KEY();
     s_provider = atoi(enamel_get_WEATHER_PROVIDER());
+#ifndef PBL_PLATFORM_APLITE
     s_use_gps = enamel_get_WEATHER_USE_GPS();
+#endif
 
     generic_weather_init();
+#ifndef PBL_PLATFORM_APLITE
     geocode_init();
+#endif
 
     generic_weather_set_api_key(s_api_key);
     generic_weather_set_provider(s_provider);
     generic_weather_set_feels_like(true);
     generic_weather_load(PERSIST_KEY_WEATHER_INFO);
 
+#ifndef PBL_PLATFORM_APLITE
     strncpy(s_location_name, enamel_get_WEATHER_LOCATION_NAME(), sizeof(s_location_name));
     GeocodeMapquestCoordinates *coordinates = geocode_peek();
     if (s_use_gps || coordinates == NULL || strlen(s_location_name) == 0) {
@@ -198,6 +211,9 @@ void weather_init(void) {
         });
     }
     s_geocode_event_handle = events_geocode_subscribe(geocode_handler, NULL);
+#else
+    generic_weather_set_location(GENERIC_WEATHER_GPS_LOCATION);
+#endif
 
     s_settings_event_handle = enamel_settings_received_subscribe(settings_handler, NULL);
 
@@ -218,13 +234,17 @@ void weather_deinit(void) {
     events_app_message_unsubscribe(s_app_message_event_handle);
     events_connection_service_unsubscribe(s_connection_event_handle);
     enamel_settings_received_unsubscribe(s_settings_event_handle);
+#ifndef PBL_PLATFORM_APLITE
     events_geocode_unsubscribe(s_geocode_event_handle);
+#endif
     generic_weather_save(PERSIST_KEY_WEATHER_INFO);
     generic_weather_deinit();
 
     persist_write_int(PERSIST_KEY_WEATHER_STATUS, s_status);
 
+#ifndef PBL_PLATFORM_APLITE
     geocode_deinit();
+#endif
 
     free(s_handler_list);
 }
