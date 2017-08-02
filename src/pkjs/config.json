@@ -80,127 +80,6 @@
     },
     {
         "type": "section",
-        "capabilities": [ "HEALTH" ],
-        "items": [
-            {
-                "type": "heading",
-                "defaultValue": "Widgets"
-            },
-            {
-                "type": "select",
-                "messageKey": "WIDGET_0",
-                "label": "First Position",
-                "defaultValue": "1",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Steps",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "6"
-                    }
-                ],
-                "group": "widget"
-            },
-            {
-                "type": "select",
-                "messageKey": "WIDGET_1",
-                "label": "Second Position",
-                "defaultValue": "2",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Steps",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "6"
-                    }
-                ],
-                "group": "widget"
-            },
-            {
-                "type": "select",
-                "messageKey": "WIDGET_2",
-                "label": "Third Position",
-                "defaultValue": "3",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Steps",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "6"
-                    }
-                ],
-                "group": "widget"
-            }
-        ]
-    },
-    {
-        "type": "section",
         "items": [
             {
                 "type": "heading",
@@ -324,6 +203,127 @@
                         "id": "masterKeyText"
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "type": "section",
+        "capabilities": [ "HEALTH" ],
+        "items": [
+            {
+                "type": "heading",
+                "defaultValue": "Widgets"
+            },
+            {
+                "type": "select",
+                "messageKey": "WIDGET_0",
+                "label": "First Position",
+                "defaultValue": "1",
+                "options": [
+                    {
+                        "label": "None",
+                        "value": "0"
+                    },
+                    {
+                        "label": "Date",
+                        "value": "1"
+                    },
+                    {
+                        "label": "Status",
+                        "value": "2"
+                    },
+                    {
+                        "label": "Battery",
+                        "value": "3"
+                    },
+                    {
+                        "label": "Seconds",
+                        "value": "4"
+                    },
+                    {
+                        "label": "Steps",
+                        "value": "5"
+                    },
+                    {
+                        "label": "Weather",
+                        "value": "6"
+                    }
+                ],
+                "group": "widget"
+            },
+            {
+                "type": "select",
+                "messageKey": "WIDGET_1",
+                "label": "Second Position",
+                "defaultValue": "2",
+                "options": [
+                    {
+                        "label": "None",
+                        "value": "0"
+                    },
+                    {
+                        "label": "Date",
+                        "value": "1"
+                    },
+                    {
+                        "label": "Status",
+                        "value": "2"
+                    },
+                    {
+                        "label": "Battery",
+                        "value": "3"
+                    },
+                    {
+                        "label": "Seconds",
+                        "value": "4"
+                    },
+                    {
+                        "label": "Steps",
+                        "value": "5"
+                    },
+                    {
+                        "label": "Weather",
+                        "value": "6"
+                    }
+                ],
+                "group": "widget"
+            },
+            {
+                "type": "select",
+                "messageKey": "WIDGET_2",
+                "label": "Third Position",
+                "defaultValue": "3",
+                "options": [
+                    {
+                        "label": "None",
+                        "value": "0"
+                    },
+                    {
+                        "label": "Date",
+                        "value": "1"
+                    },
+                    {
+                        "label": "Status",
+                        "value": "2"
+                    },
+                    {
+                        "label": "Battery",
+                        "value": "3"
+                    },
+                    {
+                        "label": "Seconds",
+                        "value": "4"
+                    },
+                    {
+                        "label": "Steps",
+                        "value": "5"
+                    },
+                    {
+                        "label": "Weather",
+                        "value": "6"
+                    }
+                ],
+                "group": "widget"
             }
         ]
     },
