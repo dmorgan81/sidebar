@@ -8,6 +8,7 @@
 #include "battery-layer.h"
 #include "seconds-layer.h"
 #include "steps-layer.h"
+#include "weather-layer.h"
 
 #define WIDGET_WIDTH ACTION_BAR_WIDTH
 #define WIDGET_HEIGHT 56
@@ -26,6 +27,7 @@ typedef enum {
 #ifdef PBL_HEALTH
     WidgetTypeSteps,
 #endif
+    WidgetTypeWeather,
 } WidgetType;
 
 typedef struct {
@@ -64,6 +66,7 @@ static Widget *prv_widget_create(WidgetType type) {
 #ifdef PBL_HEALTH
         case WidgetTypeSteps: this->layer = steps_layer_create(WIDGET_RECT); break;
 #endif
+        case WidgetTypeWeather: this->layer = weather_layer_create(WIDGET_RECT); break;
         default: this->layer = NULL; break;
     }
     return this;
@@ -79,6 +82,7 @@ static void prv_widget_destroy(Widget *this) {
 #ifdef PBL_HEALTH
         case WidgetTypeSteps: steps_layer_destroy(this->layer); break;
 #endif
+        case WidgetTypeWeather: weather_layer_destroy(this->layer); break;
         default: break;
     }
     free(this);

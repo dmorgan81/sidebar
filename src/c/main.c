@@ -4,6 +4,7 @@
 #include <pebble-hourly-vibes/hourly-vibes.h>
 #include <enamel.h>
 #include "logging.h"
+#include "weather.h"
 #include "sidebar-layer.h"
 #include "time-layer.h"
 
@@ -59,6 +60,7 @@ static void prv_window_unload(Window *window) {
 static void prv_init(void) {
     logf();
     enamel_init();
+    weather_init();
     connection_vibes_init();
     hourly_vibes_init();
     uint32_t const pattern[] = { 100 };
@@ -88,6 +90,7 @@ static void prv_deinit(void) {
 
     hourly_vibes_deinit();
     connection_vibes_deinit();
+    weather_deinit();
     enamel_deinit();
 }
 

@@ -11,6 +11,8 @@
     "pebble-connection-vibes": "^1.1.0",
     "pebble-events": "^1.2.0",
     "pebble-fctx": "^1.6.2",
+    "pebble-generic-weather": "^1.1.6",
+    "pebble-geocode-mapquest": "^1.0.2",
     "pebble-hourly-vibes": "^1.1.0"
   },
   "devDependencies": {
@@ -38,6 +40,12 @@
       "COLOR_SIDEBAR",
       "HOURLY_VIBE",
       "CONNECTION_VIBE",
+      "WEATHER_KEY",
+      "WEATHER_UNIT",
+      "WEATHER_INTERVAL",
+      "WEATHER_PROVIDER",
+      "WEATHER_USE_GPS",
+      "WEATHER_LOCATION_NAME",
       "WIDGET_0",
       "WIDGET_1",
       "WIDGET_2"
@@ -77,6 +85,46 @@
             "basalt",
             "diorite"
           ]
+        },
+        {
+          "type": "raw",
+          "name": "PDC_WEATHER_CLEAR_DAY",
+          "file": "weather_clear_day.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_WEATHER_CLEAR_NIGHT",
+          "file": "weather_clear_night.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_WEATHER_PARTLY_CLOUDY_DAY",
+          "file": "weather_partly_cloudy_day.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_WEATHER_PARTLY_CLOUDY_NIGHT",
+          "file": "weather_partly_cloudy_night.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_WEATHER_CLOUDY",
+          "file": "weather_cloudy.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_WEATHER_MIST",
+          "file": "weather_mist.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_WEATHER_RAIN",
+          "file": "weather_rain.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_WEATHER_SNOW",
+          "file": "weather_snow.pdc"
         }
       ]
     }
