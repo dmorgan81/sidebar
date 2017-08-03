@@ -35,10 +35,34 @@ typedef struct {
     Layer *layer;
 } Widget;
 
-static const char* (*s_widget_settings[])() = {
+static const char* (* const s_widget_settings[])() = {
     enamel_get_WIDGET_0,
     enamel_get_WIDGET_1,
     enamel_get_WIDGET_2
+};
+
+static Layer* (* const s_widget_create_funcs[])(GRect) = {
+    NULL,
+    date_layer_create,
+    status_layer_create,
+    battery_layer_create,
+    seconds_layer_create,
+#ifdef PBL_HEALTH
+    steps_layer_create,
+#endif
+    weather_layer_create,
+};
+
+static void (* const s_widget_destroy_funcs[])(Layer *) = {
+    NULL,
+    date_layer_destroy,
+    status_layer_destroy,
+    battery_layer_destroy,
+    seconds_layer_destroy,
+#ifdef PBL_HEALTH
+    steps_layer_destroy,
+#endif
+    weather_layer_destroy,
 };
 
 typedef struct {
@@ -58,33 +82,15 @@ static Widget *prv_widget_create(WidgetType type) {
     logf();
     Widget *this = malloc(sizeof(Widget));
     this->type = type;
-    switch (type) {
-        case WidgetTypeDate: this->layer = date_layer_create(WIDGET_RECT); break;
-        case WidgetTypeStatus: this->layer = status_layer_create(WIDGET_RECT); break;
-        case WidgetTypeBattery: this->layer = battery_layer_create(WIDGET_RECT); break;
-        case WidgetTypeSeconds: this->layer = seconds_layer_create(WIDGET_RECT); break;
-#ifdef PBL_HEALTH
-        case WidgetTypeSteps: this->layer = steps_layer_create(WIDGET_RECT); break;
-#endif
-        case WidgetTypeWeather: this->layer = weather_layer_create(WIDGET_RECT); break;
-        default: this->layer = NULL; break;
-    }
+    Layer* (*create_func)(GRect) = s_widget_create_funcs[type];
+    this->layer = create_func != NULL ? create_func(WIDGET_RECT) : NULL;
     return this;
 }
 
 static void prv_widget_destroy(Widget *this) {
     logf();
-    switch(this->type) {
-        case WidgetTypeDate: date_layer_destroy(this->layer); break;
-        case WidgetTypeStatus: status_layer_destroy(this->layer); break;
-        case WidgetTypeBattery: battery_layer_destroy(this->layer); break;
-        case WidgetTypeSeconds: seconds_layer_destroy(this->layer); break;
-#ifdef PBL_HEALTH
-        case WidgetTypeSteps: steps_layer_destroy(this->layer); break;
-#endif
-        case WidgetTypeWeather: weather_layer_destroy(this->layer); break;
-        default: break;
-    }
+    void (*destroy_func)(Layer *) = s_widget_destroy_funcs[this->type];
+    if (destroy_func != NULL) destroy_func(this->layer);
     free(this);
 }
 
