@@ -38,7 +38,7 @@ static void prv_update_proc(TimeLayer *this, GContext *ctx) {
     FContext fctx;
     fctx_init_context(&fctx, ctx);
 
-    fctx_set_fill_color(&fctx, gcolor_legible_over(enamel_get_COLOR_BACKGROUND()));
+    fctx_set_fill_color(&fctx, enamel_get_COLOR_TIME());
     fctx_set_text_em_height(&fctx, font, (bounds.size.h * 5) / 8);
 
 #if PBL_API_EXISTS(unobstructed_area_service_subscribe)

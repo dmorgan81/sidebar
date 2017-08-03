@@ -62,6 +62,14 @@
             },
             {
                 "type": "color",
+                "messageKey": "COLOR_TIME",
+                "label": "Time Color",
+                "defaultValue": "000000",
+                "sunlight": false,
+                "allowGray": true
+            },
+            {
+                "type": "color",
                 "messageKey": "COLOR_BACKGROUND",
                 "label": "Background Color",
                 "defaultValue": "FFFFFF",
