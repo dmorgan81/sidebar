@@ -78,12 +78,15 @@ module.exports = function(minified) {
             });
         });
 
-        var gpsToggle = Clay.getItemByMessageKey('WEATHER_USE_GPS');
-        var locationInput = Clay.getItemByMessageKey('WEATHER_LOCATION_NAME');
-        gpsToggle.on('change', function() {
-            if (gpsToggle.get()) locationInput.hide();
-            else locationInput.show();
-        }).trigger('change');
+        var watchInfo = Clay.meta.activeWatchInfo;
+        if (watchInfo.platform != 'aplite') {
+            var gpsToggle = Clay.getItemByMessageKey('WEATHER_USE_GPS');
+            var locationInput = Clay.getItemByMessageKey('WEATHER_LOCATION_NAME');
+            gpsToggle.on('change', function() {
+                if (gpsToggle.get()) locationInput.hide();
+                else locationInput.show();
+            }).trigger('change');
+        }
 
         configureWeather();
 

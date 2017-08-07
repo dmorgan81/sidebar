@@ -57,7 +57,7 @@ static void prv_update_proc(WeatherLayer *this, GContext *ctx) {
         pdc_transform_recolor_image(pdc, GColorBlack, GColorWhite);
     }
 
-    gdraw_command_image_draw(ctx, pdc, GPoint(3, WEATHER_LAYER_MARGIN_TOP));
+    gdraw_command_image_draw(ctx, pdc, GPoint(2, WEATHER_LAYER_MARGIN_TOP));
     gdraw_command_image_destroy(pdc);
 
     char s[6];

@@ -127,6 +127,11 @@
           "type": "raw",
           "name": "PDC_WEATHER_SNOW",
           "file": "weather_snow.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_HEART_RATE",
+          "file": "heart_rate.pdc"
         }
       ]
     }

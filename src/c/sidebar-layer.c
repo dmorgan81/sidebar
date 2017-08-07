@@ -8,6 +8,7 @@
 #include "battery-layer.h"
 #include "seconds-layer.h"
 #include "steps-layer.h"
+#include "heart-rate-layer.h"
 #include "weather-layer.h"
 
 #define WIDGET_WIDTH ACTION_BAR_WIDTH
@@ -26,6 +27,7 @@ typedef enum {
     WidgetTypeSeconds,
 #ifdef PBL_HEALTH
     WidgetTypeSteps,
+    WidgetTypeHeartRate,
 #endif
     WidgetTypeWeather,
 } WidgetType;
@@ -49,6 +51,7 @@ static Layer* (* const s_widget_create_funcs[])(GRect) = {
     seconds_layer_create,
 #ifdef PBL_HEALTH
     steps_layer_create,
+    heart_rate_layer_create,
 #endif
     weather_layer_create,
 };
@@ -61,6 +64,7 @@ static void (* const s_widget_destroy_funcs[])(Layer *) = {
     seconds_layer_destroy,
 #ifdef PBL_HEALTH
     steps_layer_destroy,
+    heart_rate_layer_destroy,
 #endif
     weather_layer_destroy,
 };
