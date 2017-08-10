@@ -7,6 +7,7 @@
 
 #define STATUS_LAYER_CONN_IDX 3
 #define STATUS_LAYER_NO_CONN_IDX 6
+#define STATUS_LAYER_QT_IDX 8
 
 typedef struct {
     bool connected;
@@ -25,23 +26,31 @@ static void prv_update_proc(StatusLayer *this, GContext *ctx) {
         pdc_transform_recolor_image(pdc, GColorBlack, GColorWhite);
     }
 
-#ifndef PBL_PLATFORM_APLITE
-    if (quiet_time_is_active()) {
-        for (uint i = STATUS_LAYER_CONN_IDX; i < num_cmds; i++) {
-            gdraw_command_set_hidden(gdraw_command_list_get_command(list, i), true);
-        }
-    } else
-#endif
-
     if (!data->connected) {
         for (uint i = STATUS_LAYER_CONN_IDX; i < STATUS_LAYER_NO_CONN_IDX; i++) {
             gdraw_command_set_hidden(gdraw_command_list_get_command(list, i), true);
         }
 
-        for (uint i = STATUS_LAYER_NO_CONN_IDX; i < num_cmds; i++) {
+        for (uint i = STATUS_LAYER_NO_CONN_IDX; i < STATUS_LAYER_QT_IDX; i++) {
+            gdraw_command_set_hidden(gdraw_command_list_get_command(list, i), false);
+        }
+
+        for (uint i = STATUS_LAYER_QT_IDX; i < num_cmds; i++) {
+            gdraw_command_set_hidden(gdraw_command_list_get_command(list, i), true);
+        }
+    }
+
+#ifndef PBL_PLATFORM_APLITE
+    else if (quiet_time_is_active()) {
+        for (uint i = STATUS_LAYER_CONN_IDX; i < STATUS_LAYER_QT_IDX; i++) {
+            gdraw_command_set_hidden(gdraw_command_list_get_command(list, i), true);
+        }
+
+        for (uint i = STATUS_LAYER_QT_IDX; i < num_cmds; i++) {
             gdraw_command_set_hidden(gdraw_command_list_get_command(list, i), false);
         }
     }
+#endif
 
     gdraw_command_image_draw(ctx, pdc, GPoint(2, 14));
     gdraw_command_image_destroy(pdc);

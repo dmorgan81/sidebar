@@ -78,8 +78,23 @@ typedef struct {
 
 static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
     logf();
+    Data *data = layer_get_data(this);
+
     graphics_context_set_fill_color(ctx, enamel_get_COLOR_SIDEBAR());
     graphics_fill_rect(ctx, layer_get_bounds(this), 0, GCornerNone);
+
+    if (data->status_layer != NULL) {
+        Widget *widget = data->widgets[1];
+        bool connected = connection_service_peek_pebble_app_connection();
+#ifndef PBL_PLATFORM_APLITE
+        bool quiet_time = quiet_time_is_active();
+        layer_set_hidden(data->status_layer, !quiet_time && connected);
+        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, quiet_time || !connected);
+#else
+        layer_set_hidden(data->status_layer, connected);
+        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, !connected);
+#endif
+    }
 }
 
 static Widget *prv_widget_create(WidgetType type) {
