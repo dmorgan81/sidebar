@@ -42,6 +42,8 @@
       "COLOR_SIDEBAR",
       "HOURLY_VIBE",
       "CONNECTION_VIBE",
+      "ALT_TIME",
+      "ALT_TIME_LABEL",
       "WEATHER_KEY",
       "WEATHER_UNIT",
       "WEATHER_INTERVAL",

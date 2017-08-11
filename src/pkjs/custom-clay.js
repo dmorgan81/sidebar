@@ -66,6 +66,8 @@ module.exports = function(minified) {
     }
 
     Clay.on(Clay.EVENTS.AFTER_BUILD, function() {
+        var watchInfo = Clay.meta.activeWatchInfo;
+        var altTimeValue = watchInfo.platform == 'aplite' ? '6' : '8';
 
         var widgets = Clay.getItemsByGroup('widget');
         widgets.forEach(function(widget) {
@@ -75,10 +77,20 @@ module.exports = function(minified) {
                     .filter(function(w) { return w.get() !== '0'; })
                     .filter(function(w) { return w.get() === this.get(); }, this)
                     .forEach(function(w) { w.set('0'); });
-            });
+
+                if (widgets.map(function(w) { return w.get(); }).indexOf(altTimeValue) > -1) {
+                    Clay.getItemsByGroup('alt-time').forEach(function(i) { i.show(); });
+                } else {
+                    Clay.getItemsByGroup('alt-time').forEach(function(i) { i.hide(); });
+                }
+            }).trigger('change');
         });
 
-        var watchInfo = Clay.meta.activeWatchInfo;
+        Clay.getItemByMessageKey('ALT_TIME').on('change', function() {
+            var val = this.get();
+            this.$element.select('.description').ht('UTC' + (val >= 0 ? '+' : '') + val);
+        }).trigger('change');
+
         if (watchInfo.platform != 'aplite') {
             var gpsToggle = Clay.getItemByMessageKey('WEATHER_USE_GPS');
             var locationInput = Clay.getItemByMessageKey('WEATHER_LOCATION_NAME');

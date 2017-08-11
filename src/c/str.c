@@ -4,7 +4,7 @@
 static inline void prv_draw_outline_text(GContext *ctx, GFont font, char *s, GRect bounds, GPoint offset) {
     logf();
     graphics_draw_text(ctx, s, font, GRect(bounds.origin.x + offset.x, bounds.origin.y + offset.y, bounds.size.w, bounds.size.h),
-        GTextOverflowModeFill, GTextAlignmentCenter, NULL);
+        GTextOverflowModeWordWrap, GTextAlignmentCenter, NULL);
 }
 
 void graphics_draw_outline_text(GContext *ctx, GFont font, char *s, GRect bounds, GColor outline_color, GColor text_color) {

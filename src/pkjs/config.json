@@ -261,6 +261,10 @@
                     {
                         "label": "Weather",
                         "value": "7"
+                    },
+                    {
+                        "label": "Alternate Timezone",
+                        "value": "8"
                     }
                 ],
                 "group": "widget"
@@ -298,6 +302,10 @@
                     {
                         "label": "Weather",
                         "value": "7"
+                    },
+                    {
+                        "label": "Alternate Timezone",
+                        "value": "8"
                     }
                 ],
                 "group": "widget"
@@ -335,6 +343,10 @@
                     {
                         "label": "Weather",
                         "value": "7"
+                    },
+                    {
+                        "label": "Alternate Timezone",
+                        "value": "8"
                     }
                 ],
                 "group": "widget"
@@ -386,6 +398,10 @@
                     {
                         "label": "Weather",
                         "value": "7"
+                    },
+                    {
+                        "label": "Alternate Timezone",
+                        "value": "8"
                     }
                 ],
                 "group": "widget"
@@ -427,6 +443,10 @@
                     {
                         "label": "Weather",
                         "value": "7"
+                    },
+                    {
+                        "label": "Alternate Timezone",
+                        "value": "8"
                     }
                 ],
                 "group": "widget"
@@ -468,6 +488,10 @@
                     {
                         "label": "Weather",
                         "value": "7"
+                    },
+                    {
+                        "label": "Alternate Timezone",
+                        "value": "8"
                     }
                 ],
                 "group": "widget"
@@ -511,6 +535,10 @@
                     {
                         "label": "Weather",
                         "value": "5"
+                    },
+                    {
+                        "label": "Alternate Timezone",
+                        "value": "6"
                     }
                 ],
                 "group": "widget"
@@ -544,6 +572,10 @@
                     {
                         "label": "Weather",
                         "value": "5"
+                    },
+                    {
+                        "label": "Alternate Timezone",
+                        "value": "6"
                     }
                 ],
                 "group": "widget"
@@ -577,9 +609,38 @@
                     {
                         "label": "Weather",
                         "value": "5"
+                    },
+                    {
+                        "label": "Alternate Timezone",
+                        "value": "6"
                     }
                 ],
                 "group": "widget"
+            }
+        ]
+    },
+    {
+        "type": "section",
+        "items": [
+            {
+                "type": "slider",
+                "messageKey": "ALT_TIME",
+                "label": "Alternate Timezone",
+                "description": "UTC",
+                "defaultValue": 0,
+                "min": -12,
+                "max": 14,
+                "group": "alt-time"
+            },
+            {
+                "type": "input",
+                "messageKey": "ALT_TIME_LABEL",
+                "label": "Alt Timezone Label",
+                "defaultValue": "ALT",
+                "group": "alt-time",
+                "attributes": {
+                    "maxlength": 3
+                  }
             }
         ]
     },

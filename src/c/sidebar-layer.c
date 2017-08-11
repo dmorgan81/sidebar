@@ -10,6 +10,7 @@
 #include "steps-layer.h"
 #include "heart-rate-layer.h"
 #include "weather-layer.h"
+#include "alt-time-layer.h"
 
 #define WIDGET_WIDTH ACTION_BAR_WIDTH
 #define WIDGET_HEIGHT 56
@@ -30,6 +31,7 @@ typedef enum {
     WidgetTypeHeartRate,
 #endif
     WidgetTypeWeather,
+    WidgetTypeAltTime,
 } WidgetType;
 
 typedef struct {
@@ -54,6 +56,7 @@ static Layer* (* const s_widget_create_funcs[])(GRect) = {
     heart_rate_layer_create,
 #endif
     weather_layer_create,
+    alt_time_layer_create,
 };
 
 static void (* const s_widget_destroy_funcs[])(Layer *) = {
@@ -67,11 +70,13 @@ static void (* const s_widget_destroy_funcs[])(Layer *) = {
     heart_rate_layer_destroy,
 #endif
     weather_layer_destroy,
+    alt_time_layer_destroy,
 };
 
 typedef struct {
     Widget *widgets[3];
     StatusLayer *status_layer;
+    bool connected;
     EventHandle settings_event_handle;
     EventHandle connection_event_handle;
 } Data;
@@ -85,14 +90,13 @@ static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
 
     if (data->status_layer != NULL) {
         Widget *widget = data->widgets[1];
-        bool connected = connection_service_peek_pebble_app_connection();
 #ifndef PBL_PLATFORM_APLITE
         bool quiet_time = quiet_time_is_active();
-        layer_set_hidden(data->status_layer, !quiet_time && connected);
-        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, quiet_time || !connected);
+        layer_set_hidden(data->status_layer, !quiet_time && data->connected);
+        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, quiet_time || !data->connected);
 #else
-        layer_set_hidden(data->status_layer, connected);
-        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, !connected);
+        layer_set_hidden(data->status_layer, data->connected);
+        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, !data->connected);
 #endif
     }
 }
@@ -116,11 +120,7 @@ static void prv_widget_destroy(Widget *this) {
 static void prv_connection_handler(bool connected, void *this) {
     logf();
     Data *data = layer_get_data(this);
-    if (data->status_layer != NULL) {
-        layer_set_hidden(data->status_layer, connected);
-        Widget *widget = data->widgets[1];
-        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, !connected);
-    }
+    data->connected = connected;
     layer_mark_dirty(this);
 }
 
