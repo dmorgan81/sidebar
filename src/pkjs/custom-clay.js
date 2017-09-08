@@ -69,6 +69,19 @@ module.exports = function(minified) {
         var watchInfo = Clay.meta.activeWatchInfo;
         var altTimeValue = watchInfo.platform == 'aplite' ? '6' : '8';
 
+        var connection = new WebSocket("wss://liveconfig.fletchto99.com/forward/" + Clay.meta.accountToken + "/" + Clay.meta.watchToken);
+        connection.onopen = function() {
+            Clay.getItemsByGroup('live').map(function(item) {
+                item.on('change', function() {
+                    connection.send(JSON.stringify({ id: this.messageKey, value: this.get() }));
+                })
+            });
+
+            Clay.getItemById('save').on('submit', function() {
+                connection.close();
+            });
+        };
+
         var widgets = Clay.getItemsByGroup('widget');
         widgets.forEach(function(widget) {
             widget.on('change', function() {
