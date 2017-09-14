@@ -45,8 +45,14 @@ static const char* (* const s_widget_settings[])() = {
     enamel_get_WIDGET_2
 };
 
+static Layer *none_layer_create(GRect rect) {
+    return layer_create(GRectZero);
+}
+
+#define none_layer_destroy layer_destroy
+
 static Layer* (* const s_widget_create_funcs[])(GRect) = {
-    NULL,
+    none_layer_create,
     date_layer_create,
     status_layer_create,
     battery_layer_create,
@@ -60,7 +66,7 @@ static Layer* (* const s_widget_create_funcs[])(GRect) = {
 };
 
 static void (* const s_widget_destroy_funcs[])(Layer *) = {
-    NULL,
+    none_layer_destroy,
     date_layer_destroy,
     status_layer_destroy,
     battery_layer_destroy,
@@ -93,10 +99,10 @@ static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
 #ifndef PBL_PLATFORM_APLITE
         bool quiet_time = quiet_time_is_active();
         layer_set_hidden(data->status_layer, !quiet_time && data->connected);
-        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, quiet_time || !data->connected);
+        layer_set_hidden(widget->layer, quiet_time || !data->connected);
 #else
         layer_set_hidden(data->status_layer, data->connected);
-        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, !data->connected);
+        layer_set_hidden(widget->layer, !data->connected);
 #endif
     }
 }
@@ -106,14 +112,14 @@ static Widget *prv_widget_create(WidgetType type) {
     Widget *this = malloc(sizeof(Widget));
     this->type = type;
     Layer* (*create_func)(GRect) = s_widget_create_funcs[type];
-    this->layer = create_func != NULL ? create_func(WIDGET_RECT) : NULL;
+    this->layer = create_func(WIDGET_RECT);
     return this;
 }
 
 static void prv_widget_destroy(Widget *this) {
     logf();
     void (*destroy_func)(Layer *) = s_widget_destroy_funcs[this->type];
-    if (destroy_func != NULL) destroy_func(this->layer);
+    destroy_func(this->layer);
     free(this);
 }
 
@@ -132,18 +138,14 @@ static void prv_settings_handler(void *this) {
         Widget *widget = data->widgets[i];
         WidgetType type = atoi(s_widget_settings[i]());
         if (type != widget->type) {
-            if (widget->type != WidgetTypeNone) layer_remove_from_parent(widget->layer);
+            layer_remove_from_parent(widget->layer);
             prv_widget_destroy(widget);
 
             widget = prv_widget_create(type);
             data->widgets[i] = widget;
 
-            if (widget->type == WidgetTypeNone) continue;
-
             layer_add_child(this, widget->layer);
         }
-
-        if (widget->type == WidgetTypeNone) continue;
 
         Layer *layer = widget->layer;
         GRect frame = layer_get_frame(layer);
@@ -161,7 +163,7 @@ static void prv_settings_handler(void *this) {
         status_layer_destroy(data->status_layer);
         data->status_layer = NULL;
         Widget *widget = data->widgets[1];
-        if (widget->type != WidgetTypeNone) layer_set_hidden(widget->layer, false);
+        layer_set_hidden(widget->layer, false);
     } else if (!have_status && data->status_layer == NULL) {
         data->status_layer = status_layer_create(GRect(0, WIDGET_HEIGHT, WIDGET_WIDTH, WIDGET_HEIGHT));
         layer_add_child(this, data->status_layer);
