@@ -6,8 +6,6 @@
 #include "weather.h"
 #include "weather-layer.h"
 
-#define WEATHER_LAYER_MARGIN_TOP 7
-
 typedef struct {
     GenericWeatherStatus status;
     GenericWeatherInfo info;
@@ -57,7 +55,7 @@ static void prv_update_proc(WeatherLayer *this, GContext *ctx) {
         pdc_transform_recolor_image(pdc, GColorBlack, GColorWhite);
     }
 
-    gdraw_command_image_draw(ctx, pdc, GPoint(2, WEATHER_LAYER_MARGIN_TOP));
+    gdraw_command_image_draw(ctx, pdc, GPoint(2, 0));
     gdraw_command_image_destroy(pdc);
 
     char s[6];
@@ -70,7 +68,7 @@ static void prv_update_proc(WeatherLayer *this, GContext *ctx) {
     } else {
         snprintf(s, sizeof(s), "??");
     }
-    GRect rect = GRect(0, WEATHER_LAYER_MARGIN_TOP + 22, bounds.size.w, bounds.size.h);
+    GRect rect = GRect(0, 22, bounds.size.w, bounds.size.h);
     graphics_draw_outline_text(ctx, font, s, rect, stroke_color, text_color);
 }
 
@@ -82,9 +80,9 @@ static void prv_weather_handler(GenericWeatherInfo *info, GenericWeatherStatus s
     layer_mark_dirty(this);
 }
 
-WeatherLayer *weather_layer_create(GRect frame) {
+WeatherLayer *weather_layer_create(void) {
     logf();
-    WeatherLayer *this = layer_create_with_data(frame, sizeof(Data));
+    WeatherLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 41), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

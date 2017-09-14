@@ -3,5 +3,5 @@
 
 typedef Layer WeatherLayer;
 
-WeatherLayer *weather_layer_create(GRect frame);
+WeatherLayer *weather_layer_create(void);
 void weather_layer_destroy(WeatherLayer *this);

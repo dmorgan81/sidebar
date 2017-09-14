@@ -3,5 +3,5 @@
 
 typedef Layer SecondsLayer;
 
-SecondsLayer *seconds_layer_create(GRect frame);
+SecondsLayer *seconds_layer_create(void);
 void seconds_layer_destroy(SecondsLayer *this);

@@ -7,8 +7,6 @@
 #include "str.h"
 #include "steps-layer.h"
 
-#define STEPS_LAYER_MARGIN_TOP 12
-
 typedef struct {
     HealthValue steps;
     EventHandle health_event_handle;
@@ -28,7 +26,7 @@ static void prv_update_proc(StepsLayer *this, GContext *ctx) {
         pdc_transform_recolor_image(pdc, GColorBlack, GColorWhite);
     }
 
-    gdraw_command_image_draw(ctx, pdc, GPoint(2, STEPS_LAYER_MARGIN_TOP));
+    gdraw_command_image_draw(ctx, pdc, GPoint(2, 0));
     gdraw_command_image_destroy(pdc);
 
     HealthValue steps = data->steps;
@@ -40,7 +38,7 @@ static void prv_update_proc(StepsLayer *this, GContext *ctx) {
     } else {
         snprintf(s, sizeof(s), "%ldk", steps / 1000);
     }
-    GRect rect = GRect(0, STEPS_LAYER_MARGIN_TOP + 17, bounds.size.w, bounds.size.h);
+    GRect rect = GRect(0, 17, bounds.size.w, bounds.size.h);
     graphics_draw_outline_text(ctx, font, s, rect, stroke_color, text_color);
 }
 
@@ -58,9 +56,9 @@ static void prv_health_event_handler(HealthEventType event, void *this) {
     }
 }
 
-StepsLayer *steps_layer_create(GRect frame) {
+StepsLayer *steps_layer_create(void) {
     logf();
-    StepsLayer *this = layer_create_with_data(frame, sizeof(Data));
+    StepsLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 32), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

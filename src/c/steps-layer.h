@@ -3,5 +3,5 @@
 
 typedef Layer StepsLayer;
 
-StepsLayer *steps_layer_create(GRect frame);
+StepsLayer *steps_layer_create(void);
 void steps_layer_destroy(StepsLayer *this);

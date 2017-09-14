@@ -21,8 +21,7 @@ static void prv_update_proc(SecondsLayer *this, GContext *ctx) {
 
     char s[4];
     snprintf(s, sizeof(s), ":%02d", data->tm_sec);
-    GRect rect = GRect(0, 9, bounds.size.w, bounds.size.h);
-    graphics_draw_outline_text(ctx, font, s, rect, stroke_color, text_color);
+    graphics_draw_outline_text(ctx, font, s, bounds, stroke_color, text_color);
 }
 
 static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void *this) {
@@ -32,9 +31,9 @@ static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void
     layer_mark_dirty(this);
 }
 
-SecondsLayer *seconds_layer_create(GRect frame) {
+SecondsLayer *seconds_layer_create(void) {
     logf();
-    SecondsLayer *this = layer_create_with_data(frame, sizeof(Data));
+    SecondsLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 25), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

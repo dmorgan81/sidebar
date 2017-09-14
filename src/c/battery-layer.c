@@ -6,8 +6,6 @@
 #include "str.h"
 #include "battery-layer.h"
 
-#define BATTERY_LAYER_MARGIN_TOP 14
-
 typedef struct {
     BatteryChargeState charge_state;
     EventHandle battery_state_event_handle;
@@ -30,7 +28,7 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
         gdraw_command_set_hidden(gdraw_command_list_get_command(list, 2), false);
     }
 
-    gdraw_command_image_draw(ctx, pdc, GPoint(2, BATTERY_LAYER_MARGIN_TOP));
+    gdraw_command_image_draw(ctx, pdc, GPoint(2, 0));
     gdraw_command_image_destroy(pdc);
 
     char s[4];
@@ -47,12 +45,12 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
 #else
         graphics_context_set_fill_color(ctx, stroke_color);
 #endif
-        graphics_fill_rect(ctx, GRect(7 + (18 - w), BATTERY_LAYER_MARGIN_TOP + 4, w, 9), 0, GCornerNone);
+        graphics_fill_rect(ctx, GRect(7 + (18 - w), 4, w, 9), 0, GCornerNone);
 
         snprintf(s, sizeof(s), "%d%%", data->charge_state.charge_percent);
     }
 
-    GRect rect = GRect(0, BATTERY_LAYER_MARGIN_TOP + 16, bounds.size.w, bounds.size.h);
+    GRect rect = GRect(0, 16, bounds.size.w, bounds.size.h);
     graphics_draw_outline_text(ctx, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD), s, rect, stroke_color, gcolor_legible_over(stroke_color));
 }
 
@@ -63,9 +61,9 @@ static void prv_battery_state_handler(BatteryChargeState charge_state, void *thi
     layer_mark_dirty(this);
 }
 
-BatteryLayer *battery_layer_create(GRect frame) {
+BatteryLayer *battery_layer_create(void) {
     logf();
-    BatteryLayer *this = layer_create_with_data(frame, sizeof(Data));
+    BatteryLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 31), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

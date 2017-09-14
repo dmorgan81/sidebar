@@ -12,13 +12,7 @@
 #include "weather-layer.h"
 #include "alt-time-layer.h"
 
-#define WIDGET_WIDTH ACTION_BAR_WIDTH
-#define WIDGET_HEIGHT 56
-
-static const GRect WIDGET_RECT = {
-    { 0, 0 },
-    { WIDGET_WIDTH, WIDGET_HEIGHT }
-};
+#define WIDGET_EDGE_MARGIN 5
 
 typedef enum {
     WidgetTypeNone = 0,
@@ -45,13 +39,13 @@ static const char* (* const s_widget_settings[])() = {
     enamel_get_WIDGET_2
 };
 
-static Layer *none_layer_create(GRect rect) {
+static Layer *none_layer_create(void) {
     return layer_create(GRectZero);
 }
 
 #define none_layer_destroy layer_destroy
 
-static Layer* (* const s_widget_create_funcs[])(GRect) = {
+static Layer* (* const s_widget_create_funcs[])(void) = {
     none_layer_create,
     date_layer_create,
     status_layer_create,
@@ -89,21 +83,53 @@ typedef struct {
 
 static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
     logf();
+    GRect bounds = layer_get_unobstructed_bounds(this);
     Data *data = layer_get_data(this);
 
     graphics_context_set_fill_color(ctx, enamel_get_COLOR_SIDEBAR());
     graphics_fill_rect(ctx, layer_get_bounds(this), 0, GCornerNone);
 
+    Widget *widget = data->widgets[0];
+    GRect rect = layer_get_bounds(widget->layer);
+    uint8_t h1 = rect.size.h;
+    uint8_t y1 = rect.origin.y;
+
+    widget = data->widgets[2];
+    rect = layer_get_bounds(widget->layer);
+    uint8_t h3 = rect.size.h;
+
+    widget = data->widgets[1];
+    bool show_status_layer = quiet_time_is_active() || !data->connected;
+    Layer *middle_layer;
     if (data->status_layer != NULL) {
-        Widget *widget = data->widgets[1];
-#ifndef PBL_PLATFORM_APLITE
-        bool quiet_time = quiet_time_is_active();
-        layer_set_hidden(data->status_layer, !quiet_time && data->connected);
-        layer_set_hidden(widget->layer, quiet_time || !data->connected);
-#else
-        layer_set_hidden(data->status_layer, data->connected);
-        layer_set_hidden(widget->layer, !data->connected);
-#endif
+        layer_set_hidden(data->status_layer, !show_status_layer);
+        layer_set_hidden(widget->layer, show_status_layer);
+        middle_layer = show_status_layer ? data->status_layer : widget->layer;
+    } else {
+        middle_layer = widget->layer;
+    }
+    rect = layer_get_bounds(middle_layer);
+    uint8_t h2 = rect.size.h;
+
+    if (h1 + h2 + h3 > bounds.size.h) {
+        layer_set_hidden(middle_layer, true);
+        h2 = 0;
+    } else {
+        layer_set_hidden(middle_layer, false);
+    }
+
+    uint8_t y3 = bounds.size.h - WIDGET_EDGE_MARGIN;
+    if (h3 != 0) {
+        widget = data->widgets[2];
+        rect = layer_get_frame(widget->layer);
+        y3 = rect.origin.y = bounds.size.h - rect.size.h - WIDGET_EDGE_MARGIN;
+        layer_set_frame(widget->layer, rect);
+    }
+
+    if (h2 != 0) {
+        rect = layer_get_frame(middle_layer);
+        rect.origin.y = ((y3 - rect.size.h) + (y1 + h1)) / 2;
+        layer_set_frame(middle_layer, rect);
     }
 }
 
@@ -111,8 +137,8 @@ static Widget *prv_widget_create(WidgetType type) {
     logf();
     Widget *this = malloc(sizeof(Widget));
     this->type = type;
-    Layer* (*create_func)(GRect) = s_widget_create_funcs[type];
-    this->layer = create_func(WIDGET_RECT);
+    Layer* (*create_func)(void) = s_widget_create_funcs[type];
+    this->layer = create_func();
     return this;
 }
 
@@ -146,12 +172,12 @@ static void prv_settings_handler(void *this) {
 
             layer_add_child(this, widget->layer);
         }
-
-        Layer *layer = widget->layer;
-        GRect frame = layer_get_frame(layer);
-        frame.origin.y = i * WIDGET_HEIGHT;
-        layer_set_frame(layer, frame);
     }
+
+    Widget *widget = data->widgets[0];
+    GRect frame = layer_get_frame(widget->layer);
+    frame.origin.y = WIDGET_EDGE_MARGIN;
+    layer_set_frame(widget->layer, frame);
 
     WidgetType top_type = atoi(enamel_get_WIDGET_0());
     WidgetType mid_type = atoi(enamel_get_WIDGET_1());
@@ -165,7 +191,7 @@ static void prv_settings_handler(void *this) {
         Widget *widget = data->widgets[1];
         layer_set_hidden(widget->layer, false);
     } else if (!have_status && data->status_layer == NULL) {
-        data->status_layer = status_layer_create(GRect(0, WIDGET_HEIGHT, WIDGET_WIDTH, WIDGET_HEIGHT));
+        data->status_layer = status_layer_create();
         layer_add_child(this, data->status_layer);
         prv_connection_handler(connection_service_peek_pebble_app_connection(), this);
     }

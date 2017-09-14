@@ -7,8 +7,6 @@
 #include "str.h"
 #include "heart-rate-layer.h"
 
-#define HEART_RATE_LAYER_MARGIN_TOP 7
-
 typedef struct {
     HealthValue heart_rate;
     EventHandle health_event_handle;
@@ -28,7 +26,7 @@ static void prv_update_proc(HeartRateLayer *this, GContext *ctx) {
         pdc_transform_recolor_image(pdc, GColorBlack, GColorWhite);
     }
 
-    gdraw_command_image_draw(ctx, pdc, GPoint(3, HEART_RATE_LAYER_MARGIN_TOP));
+    gdraw_command_image_draw(ctx, pdc, GPoint(3, 0));
     gdraw_command_image_destroy(pdc);
 
     char s[4];
@@ -38,7 +36,7 @@ static void prv_update_proc(HeartRateLayer *this, GContext *ctx) {
         snprintf(s, sizeof(s), "N/A");
     }
 
-    GRect rect = GRect(0, HEART_RATE_LAYER_MARGIN_TOP + 25, bounds.size.w, bounds.size.h);
+    GRect rect = GRect(0, 25, bounds.size.w, bounds.size.h);
     graphics_draw_outline_text(ctx, font, s, rect, stroke_color, text_color);
 }
 
@@ -57,9 +55,9 @@ static void prv_health_event_handler(HealthEventType event, void *this) {
     layer_mark_dirty(this);
 }
 
-HeartRateLayer *heart_rate_layer_create(GRect frame) {
+HeartRateLayer *heart_rate_layer_create(void) {
     logf();
-    HeartRateLayer *this = layer_create_with_data(frame, sizeof(Data));
+    HeartRateLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 38), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

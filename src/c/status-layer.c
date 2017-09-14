@@ -52,7 +52,7 @@ static void prv_update_proc(StatusLayer *this, GContext *ctx) {
     }
 #endif
 
-    gdraw_command_image_draw(ctx, pdc, GPoint(2, 14));
+    gdraw_command_image_draw(ctx, pdc, GPoint(2, 0));
     gdraw_command_image_destroy(pdc);
 }
 
@@ -63,9 +63,9 @@ static void prv_connection_handler(bool connected, void *this) {
     layer_mark_dirty(this);
 }
 
-StatusLayer *status_layer_create(GRect frame) {
+StatusLayer *status_layer_create(void) {
     logf();
-    StatusLayer *this = layer_create_with_data(frame, sizeof(Data));
+    StatusLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 27), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

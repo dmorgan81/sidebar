@@ -52,9 +52,9 @@ static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void
     layer_mark_dirty(this);
 }
 
-DateLayer *date_layer_create(GRect frame) {
+DateLayer *date_layer_create(void) {
     logf();
-    DateLayer *this = layer_create_with_data(frame, sizeof(Data));
+    DateLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 56), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 
