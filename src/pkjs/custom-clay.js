@@ -10,6 +10,20 @@ module.exports = function(minified) {
         "2": "forecast"
     };
 
+    Clay.on(Clay.EVENTS.BEFORE_BUILD, function() {
+        var platform = Clay.meta.activeWatchInfo.platform || 'diorite';
+        var widgets = Clay.config[2].items[1].options;
+        if (platform != 'diorite') {
+            Clay.config[2].items[1].options[3].value.splice(2, 1);
+        }
+        if (platform == 'aplite') {
+            Clay.config[2].items[1].options.splice(3, 1);
+        }
+        for (var i = 2; i < 4; i++) {
+            Clay.config[2].items[i].options = widgets;
+        }
+    });
+
     function configureWeather() {
         var weatherProvider = Clay.getItemByMessageKey('WEATHER_PROVIDER');
         var weatherKey = Clay.getItemByMessageKey('WEATHER_KEY');
@@ -66,8 +80,7 @@ module.exports = function(minified) {
     }
 
     Clay.on(Clay.EVENTS.AFTER_BUILD, function() {
-        var watchInfo = Clay.meta.activeWatchInfo;
-        var altTimeValue = watchInfo.platform == 'aplite' ? '6' : '8';
+        var platform = Clay.meta.activeWatchInfo.platform || 'diorite';
 
         var connection = new WebSocket("wss://liveconfig.fletchto99.com/forward/" + Clay.meta.accountToken + "/" + Clay.meta.watchToken);
         connection.onopen = function() {
@@ -91,10 +104,16 @@ module.exports = function(minified) {
                     .filter(function(w) { return w.get() === this.get(); }, this)
                     .forEach(function(w) { w.set('0'); });
 
-                if (widgets.map(function(w) { return w.get(); }).indexOf(altTimeValue) > -1) {
+                if (widgets.map(function(w) { return w.get(); }).indexOf('6') > -1) {
                     Clay.getItemsByGroup('alt-time').forEach(function(i) { i.show(); });
                 } else {
                     Clay.getItemsByGroup('alt-time').forEach(function(i) { i.hide(); });
+                }
+
+                if (widgets.map(function(w) { return w.get(); }).indexOf('5') > -1) {
+                    Clay.getItemsByGroup('weather').forEach(function(i) { i.show(); });
+                } else {
+                    Clay.getItemsByGroup('weather').forEach(function(i) { i.hide(); });
                 }
             }).trigger('change');
         });
@@ -104,7 +123,7 @@ module.exports = function(minified) {
             this.$element.select('.description').ht('UTC' + (val >= 0 ? '+' : '') + val);
         }).trigger('change');
 
-        if (watchInfo.platform != 'aplite') {
+        if (platform != 'aplite') {
             var gpsToggle = Clay.getItemByMessageKey('WEATHER_USE_GPS');
             var locationInput = Clay.getItemByMessageKey('WEATHER_LOCATION_NAME');
             gpsToggle.on('change', function() {

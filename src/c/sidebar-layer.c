@@ -9,6 +9,7 @@
 #include "seconds-layer.h"
 #include "steps-layer.h"
 #include "heart-rate-layer.h"
+#include "distance-layer.h"
 #include "weather-layer.h"
 #include "alt-time-layer.h"
 
@@ -20,12 +21,13 @@ typedef enum {
     WidgetTypeStatus,
     WidgetTypeBattery,
     WidgetTypeSeconds,
-#ifdef PBL_HEALTH
-    WidgetTypeSteps,
-    WidgetTypeHeartRate,
-#endif
     WidgetTypeWeather,
     WidgetTypeAltTime,
+#ifdef PBL_HEALTH
+    WidgetTypeSteps,
+    WidgetTypeDistance,
+    WidgetTypeHeartRate,
+#endif
 } WidgetType;
 
 typedef struct {
@@ -51,12 +53,13 @@ static Layer* (* const s_widget_create_funcs[])(void) = {
     status_layer_create,
     battery_layer_create,
     seconds_layer_create,
-#ifdef PBL_HEALTH
-    steps_layer_create,
-    heart_rate_layer_create,
-#endif
     weather_layer_create,
     alt_time_layer_create,
+#ifdef PBL_HEALTH
+    steps_layer_create,
+    distance_layer_create,
+    heart_rate_layer_create,
+#endif
 };
 
 static void (* const s_widget_destroy_funcs[])(Layer *) = {
@@ -65,12 +68,13 @@ static void (* const s_widget_destroy_funcs[])(Layer *) = {
     status_layer_destroy,
     battery_layer_destroy,
     seconds_layer_destroy,
-#ifdef PBL_HEALTH
-    steps_layer_destroy,
-    heart_rate_layer_destroy,
-#endif
     weather_layer_destroy,
     alt_time_layer_destroy,
+#ifdef PBL_HEALTH
+    steps_layer_destroy,
+    distance_layer_destroy,
+    heart_rate_layer_destroy,
+#endif
 };
 
 typedef struct {

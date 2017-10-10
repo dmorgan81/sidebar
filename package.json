@@ -134,6 +134,11 @@
           "type": "raw",
           "name": "PDC_HEART_RATE",
           "file": "heart_rate.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_DISTANCE",
+          "file": "distance.pdc"
         }
       ]
     }

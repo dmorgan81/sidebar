@@ -103,7 +103,6 @@
     },
     {
         "type": "section",
-        "capabilities": [ "HEALTH", "NOT_PLATFORM_DIORITE" ],
         "items": [
             {
                 "type": "heading",
@@ -116,36 +115,59 @@
                 "defaultValue": "1",
                 "options": [
                     {
-                        "label": "None",
+                        "label": "Nothing",
                         "value": "0"
                     },
                     {
-                        "label": "Date",
-                        "value": "1"
+                        "label": "General",
+                        "value": [
+                            {
+                                "label": "Status",
+                                "value": "2"
+                            },
+                            {
+                                "label": "Battery",
+                                "value": "3"
+                            },
+                            {
+                                "label": "Weather",
+                                "value": "5"
+                            }
+                        ]
                     },
                     {
-                        "label": "Status",
-                        "value": "2"
+                        "label": "Time/Date",
+                        "value": [
+                            {
+                                "label": "Date",
+                                "value": "1"
+                            },
+                            {
+                                "label": "Seconds",
+                                "value": "4"
+                            },
+                            {
+                                "label": "Alternate Timezone",
+                                "value": "6"
+                            }
+                        ]
                     },
                     {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Steps",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "7"
-                    },
-                    {
-                        "label": "Alternate Timezone",
-                        "value": "8"
+                        "label": "Health",
+                        "value": [
+                            {
+                                "label": "Steps",
+                                "value": "7"
+                            },
+                            {
+                                "label": "Distance",
+                                "value": "8"
+                            },
+                            {
+                                "label": "Heart Rate",
+                                "value": "9"
+                            }
+                        ]
                     }
                 ],
                 "group": "widget"
@@ -155,40 +177,7 @@
                 "messageKey": "WIDGET_1",
                 "label": "Second Position",
                 "defaultValue": "2",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Steps",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "7"
-                    },
-                    {
-                        "label": "Alternate Timezone",
-                        "value": "8"
-                    }
-                ],
+                "options": [{ "label" : "Nothing", "value": "0" }],
                 "group": "widget"
             },
             {
@@ -196,322 +185,26 @@
                 "messageKey": "WIDGET_2",
                 "label": "Third Position",
                 "defaultValue": "3",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Steps",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "7"
-                    },
-                    {
-                        "label": "Alternate Timezone",
-                        "value": "8"
-                    }
-                ],
+                "options": [{ "label" : "Nothing", "value": "0" }],
                 "group": "widget"
             }
         ]
     },
     {
         "type": "section",
-        "capabilities": [ "PLATFORM_DIORITE" ],
+        "group": "weather",
         "items": [
             {
                 "type": "heading",
-                "defaultValue": "Widgets"
-            },
-            {
-                "type": "select",
-                "messageKey": "WIDGET_0",
-                "label": "First Position",
-                "defaultValue": "1",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Steps",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Heart Rate",
-                        "value": "6"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "7"
-                    },
-                    {
-                        "label": "Alternate Timezone",
-                        "value": "8"
-                    }
-                ],
-                "group": "widget"
-            },
-            {
-                "type": "select",
-                "messageKey": "WIDGET_1",
-                "label": "Second Position",
-                "defaultValue": "2",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Steps",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Heart Rate",
-                        "value": "6"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "7"
-                    },
-                    {
-                        "label": "Alternate Timezone",
-                        "value": "8"
-                    }
-                ],
-                "group": "widget"
-            },
-            {
-                "type": "select",
-                "messageKey": "WIDGET_2",
-                "label": "Third Position",
-                "defaultValue": "3",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Steps",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Heart Rate",
-                        "value": "6"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "7"
-                    },
-                    {
-                        "label": "Alternate Timezone",
-                        "value": "8"
-                    }
-                ],
-                "group": "widget"
-            }
-        ]
-    },
-    {
-        "type": "section",
-        "capabilities": [ "NOT_HEALTH" ],
-        "items": [
-            {
-                "type": "heading",
-                "defaultValue": "Widgets"
-            },
-            {
-                "type": "select",
-                "messageKey": "WIDGET_0",
-                "label": "First Position",
-                "defaultValue": "1",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Alternate Timezone",
-                        "value": "6"
-                    }
-                ],
-                "group": "widget"
-            },
-            {
-                "type": "select",
-                "messageKey": "WIDGET_1",
-                "label": "Second Position",
-                "defaultValue": "2",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Alternate Timezone",
-                        "value": "6"
-                    }
-                ],
-                "group": "widget"
-            },
-            {
-                "type": "select",
-                "messageKey": "WIDGET_2",
-                "label": "Third Position",
-                "defaultValue": "3",
-                "options": [
-                    {
-                        "label": "None",
-                        "value": "0"
-                    },
-                    {
-                        "label": "Date",
-                        "value": "1"
-                    },
-                    {
-                        "label": "Status",
-                        "value": "2"
-                    },
-                    {
-                        "label": "Battery",
-                        "value": "3"
-                    },
-                    {
-                        "label": "Seconds",
-                        "value": "4"
-                    },
-                    {
-                        "label": "Weather",
-                        "value": "5"
-                    },
-                    {
-                        "label": "Alternate Timezone",
-                        "value": "6"
-                    }
-                ],
-                "group": "widget"
-            }
-        ]
-    },
-    {
-        "type": "section",
-        "items": [
-            {
-                "type": "heading",
-                "defaultValue": "Weather"
+                "defaultValue": "Weather",
+                "group": "weather"
             },
             {
                 "type": "radiogroup",
                 "messageKey": "WEATHER_UNIT",
                 "label": "Unit",
                 "defaultValue": "0",
+                "group": "weather",
                 "options": [
                     {
                         "label": "Celsius",
@@ -528,6 +221,7 @@
                 "messageKey": "WEATHER_USE_GPS",
                 "label": "Use GPS",
                 "defaultValue": true,
+                "group": "weather",
                 "capabilities": [
                     "NOT_PLATFORM_APLITE"
                 ]
@@ -536,6 +230,7 @@
                 "type": "input",
                 "messageKey": "WEATHER_LOCATION_NAME",
                 "label": "Location",
+                "group": "weather",
                 "capabilities": [
                     "NOT_PLATFORM_APLITE"
                 ]
@@ -545,6 +240,7 @@
                 "messageKey": "WEATHER_INTERVAL",
                 "label": "Interval",
                 "defaultValue": "60",
+                "group": "weather",
                 "options": [
                     {
                         "label": "15 Minutes",
@@ -573,6 +269,7 @@
                 "messageKey": "WEATHER_PROVIDER",
                 "label": "Provider",
                 "defaultValue": "3",
+                "group": "weather",
                 "options": [
                     {
                         "label": "Yahoo!",
@@ -596,19 +293,23 @@
                 "type": "input",
                 "messageKey": "WEATHER_KEY",
                 "label": "API Key",
-                "description": "API key for the selected weather provider. You can retrieve your key stored at https://www.pmkey.xyz by filling in the form below"
+                "description": "API key for the selected weather provider. You can retrieve your key stored at https://www.pmkey.xyz by filling in the form below",
+                "group": "weather"
             },
             {
                 "type": "section",
+                "group": "weather",
                 "items": [
                     {
                         "type": "heading",
-                        "defaultValue": "Master Key"
+                        "defaultValue": "Master Key",
+                        "group": "weather"
                     },
                     {
                         "type": "input",
                         "id": "masterKeyEmail",
                         "label": "Master Key Email",
+                        "group": "weather",
                         "attributes": {
                             "type": "email"
                         }
@@ -617,6 +318,7 @@
                         "type": "input",
                         "id": "masterKeyPin",
                         "label": "Master Key Pin",
+                        "group": "weather",
                         "attributes": {
                             "type": "tel"
                         }
@@ -624,11 +326,13 @@
                     {
                         "type": "button",
                         "id": "masterKeyButton",
-                        "defaultValue": "Get Key"
+                        "defaultValue": "Get Key",
+                        "group": "weather"
                     },
                     {
                         "type": "text",
-                        "id": "masterKeyText"
+                        "id": "masterKeyText",
+                        "group": "weather"
                     }
                 ]
             }
