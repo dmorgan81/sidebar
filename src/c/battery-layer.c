@@ -63,7 +63,7 @@ static void prv_battery_state_handler(BatteryChargeState charge_state, void *thi
 
 BatteryLayer *battery_layer_create(void) {
     logf();
-    BatteryLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 31), sizeof(Data));
+    BatteryLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 32), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

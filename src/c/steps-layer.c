@@ -58,7 +58,7 @@ static void prv_health_event_handler(HealthEventType event, void *this) {
 
 StepsLayer *steps_layer_create(void) {
     logf();
-    StepsLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 32), sizeof(Data));
+    StepsLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 33), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

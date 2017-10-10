@@ -57,7 +57,7 @@ static void prv_health_event_handler(HealthEventType event, void *this) {
 
 HeartRateLayer *heart_rate_layer_create(void) {
     logf();
-    HeartRateLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 38), sizeof(Data));
+    HeartRateLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 41), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

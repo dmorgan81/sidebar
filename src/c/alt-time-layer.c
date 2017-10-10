@@ -62,7 +62,7 @@ static void prv_settings_handler(void *this) {
 
 AltTimeLayer *alt_time_layer_create(void) {
     logf();
-    AltTimeLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 50), sizeof(Data));
+    AltTimeLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 51), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

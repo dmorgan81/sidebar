@@ -82,7 +82,7 @@ static void prv_weather_handler(GenericWeatherInfo *info, GenericWeatherStatus s
 
 WeatherLayer *weather_layer_create(void) {
     logf();
-    WeatherLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 41), sizeof(Data));
+    WeatherLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 42), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 
