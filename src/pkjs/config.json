@@ -166,6 +166,10 @@
                             {
                                 "label": "Heart Rate",
                                 "value": "9"
+                            },
+                            {
+                                "label": "Active Time",
+                                "value": "10"
                             }
                         ]
                     }

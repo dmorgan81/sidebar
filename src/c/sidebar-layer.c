@@ -10,6 +10,7 @@
 #include "steps-layer.h"
 #include "heart-rate-layer.h"
 #include "distance-layer.h"
+#include "active-time-layer.h"
 #include "weather-layer.h"
 #include "alt-time-layer.h"
 
@@ -27,6 +28,7 @@ typedef enum {
     WidgetTypeSteps,
     WidgetTypeDistance,
     WidgetTypeHeartRate,
+    WidgetTypeActiveTime,
 #endif
 } WidgetType;
 
@@ -59,6 +61,7 @@ static Layer* (* const s_widget_create_funcs[])(void) = {
     steps_layer_create,
     distance_layer_create,
     heart_rate_layer_create,
+    active_time_layer_create,
 #endif
 };
 
@@ -74,6 +77,7 @@ static void (* const s_widget_destroy_funcs[])(Layer *) = {
     steps_layer_destroy,
     distance_layer_destroy,
     heart_rate_layer_destroy,
+    active_time_layer_destroy,
 #endif
 };
 

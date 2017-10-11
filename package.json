@@ -139,6 +139,11 @@
           "type": "raw",
           "name": "PDC_DISTANCE",
           "file": "distance.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "PDC_ACTIVE_TIME",
+          "file": "active_time.pdc"
         }
       ]
     }
