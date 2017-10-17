@@ -35,17 +35,17 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
     if (data->charge_state.is_charging) {
         snprintf(s, sizeof(s), "CHG");
     } else {
-        uint w = 18 * data->charge_state.charge_percent / 100;
+        uint w = 20 * data->charge_state.charge_percent / 100;
 
 #ifdef PBL_COLOR
         GColor fill_color = GColorIslamicGreen;
         if (data->charge_state.charge_percent <= 10) fill_color = GColorRed;
-        else if (data->charge_state.charge_percent <= 30) fill_color = GColorChromeYellow;
+        else if (data->charge_state.charge_percent <= 30) fill_color = GColorOrange;
         graphics_context_set_fill_color(ctx, fill_color);
 #else
         graphics_context_set_fill_color(ctx, stroke_color);
 #endif
-        graphics_fill_rect(ctx, GRect(7 + (18 - w), 4, w, 9), 0, GCornerNone);
+        graphics_fill_rect(ctx, GRect(6 + (20 - w), 3, w, 11), 0, GCornerNone);
 
         snprintf(s, sizeof(s), "%d%%", data->charge_state.charge_percent);
     }
