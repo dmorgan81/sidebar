@@ -12,8 +12,7 @@
                 "label": "Time Color",
                 "defaultValue": "000000",
                 "sunlight": false,
-                "allowGray": true,
-                "group": "live"
+                "allowGray": true
             },
             {
                 "type": "color",
@@ -21,8 +20,7 @@
                 "label": "Background Color",
                 "defaultValue": "FFFFFF",
                 "sunlight": false,
-                "allowGray": true,
-                "group": "live"
+                "allowGray": true
             },
             {
                 "type": "color",
@@ -30,8 +28,7 @@
                 "label": "Sidebar Color",
                 "defaultValue": "00AAFF",
                 "sunlight": false,
-                "allowGray": true,
-                "group": "live"
+                "allowGray": true
             },
             {
                 "type": "radiogroup",
@@ -47,22 +44,19 @@
                         "label": "Lato",
                         "value": "1"
                     }
-                ],
-                "group": "live"
+                ]
             },
             {
                 "type": "toggle",
                 "messageKey": "RIGHT_BAR",
                 "label": "Bar Side",
-                "defaultValue": true,
-                "group": "live"
+                "defaultValue": true
             },
             {
                 "type": "toggle",
                 "messageKey": "LEADING_ZERO",
                 "label": "Leading Zero",
-                "defaultValue": true,
-                "group": "live"
+                "defaultValue": true
             }
         ]
     },

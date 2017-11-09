@@ -82,19 +82,6 @@ module.exports = function(minified) {
     Clay.on(Clay.EVENTS.AFTER_BUILD, function() {
         var platform = Clay.meta.activeWatchInfo.platform || 'diorite';
 
-        var connection = new WebSocket("wss://liveconfig.fletchto99.com/forward/" + Clay.meta.accountToken + "/" + Clay.meta.watchToken);
-        connection.onopen = function() {
-            Clay.getItemsByGroup('live').map(function(item) {
-                item.on('change', function() {
-                    connection.send(JSON.stringify({ id: this.messageKey, value: this.get() }));
-                })
-            });
-
-            Clay.getItemById('save').on('submit', function() {
-                connection.close();
-            });
-        };
-
         var widgets = Clay.getItemsByGroup('widget');
         widgets.forEach(function(widget) {
             widget.on('change', function() {
@@ -133,6 +120,5 @@ module.exports = function(minified) {
         }
 
         configureWeather();
-
     });
 }
