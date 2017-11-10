@@ -5,6 +5,7 @@
 #include <enamel.h>
 #include "logging.h"
 #include "str.h"
+#include "health.h"
 #include "distance-layer.h"
 
 typedef struct {
@@ -59,12 +60,7 @@ static void prv_health_event_handler(HealthEventType event, void *this) {
     logf();
     if (event == HealthEventSignificantUpdate || event == HealthEventMovementUpdate) {
         Data *data = layer_get_data(this);
-        time_t start = time_start_of_today();
-        time_t end = time(NULL);
-        HealthServiceAccessibilityMask mask = health_service_metric_accessible(HealthMetricWalkedDistanceMeters, start, end);
-        if (mask & HealthServiceAccessibilityMaskAvailable) {
-            data->distance = health_service_sum_today(HealthMetricWalkedDistanceMeters);
-        }
+        data->distance = health_get_value_today(HealthMetricWalkedDistanceMeters);
         layer_mark_dirty(this);
     }
 }
