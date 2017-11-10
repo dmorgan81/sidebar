@@ -58,6 +58,12 @@
     "resources": {
       "media": [
         {
+          "type": "bitmap",
+          "name": "MENU_ICON",
+          "file": "menu-icon.png",
+          "menuIcon": true
+        },
+        {
           "type": "raw",
           "name": "FONT_LECO",
           "file": "LECO1976-Regular.ffont"
