@@ -9,6 +9,7 @@
   "dependencies": {
     "enamel": "^1.2.5",
     "pdc-transform": "^2.0.4",
+    "pebble-clay": "file:../clay",
     "pebble-connection-vibes": "^1.1.0",
     "pebble-events": "^1.2.0",
     "pebble-fctx": "^1.6.2",

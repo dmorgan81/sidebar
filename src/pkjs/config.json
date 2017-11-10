@@ -168,7 +168,7 @@
                         ]
                     }
                 ],
-                "group": "widget"
+                "groups": [ "widget" ]
             },
             {
                 "type": "select",
@@ -176,7 +176,7 @@
                 "label": "Second Position",
                 "defaultValue": "2",
                 "options": [{ "label" : "Nothing", "value": "0" }],
-                "group": "widget"
+                "groups": [ "widget" ]
             },
             {
                 "type": "select",
@@ -184,25 +184,25 @@
                 "label": "Third Position",
                 "defaultValue": "3",
                 "options": [{ "label" : "Nothing", "value": "0" }],
-                "group": "widget"
+                "groups": [ "widget" ]
             }
         ]
     },
     {
         "type": "section",
-        "group": "weather",
+        "groups": [ "weather" ],
         "items": [
             {
                 "type": "heading",
                 "defaultValue": "Weather",
-                "group": "weather"
+                "groups": [ "weather" ]
             },
             {
                 "type": "radiogroup",
                 "messageKey": "WEATHER_UNIT",
                 "label": "Unit",
                 "defaultValue": "0",
-                "group": "weather",
+                "groups": [ "weather" ],
                 "options": [
                     {
                         "label": "Celsius",
@@ -219,7 +219,7 @@
                 "messageKey": "WEATHER_USE_GPS",
                 "label": "Use GPS",
                 "defaultValue": true,
-                "group": "weather",
+                "groups": [ "weather" ],
                 "capabilities": [
                     "NOT_PLATFORM_APLITE"
                 ]
@@ -228,7 +228,7 @@
                 "type": "input",
                 "messageKey": "WEATHER_LOCATION_NAME",
                 "label": "Location",
-                "group": "weather",
+                "groups": [ "weather" ],
                 "capabilities": [
                     "NOT_PLATFORM_APLITE"
                 ]
@@ -238,7 +238,7 @@
                 "messageKey": "WEATHER_INTERVAL",
                 "label": "Interval",
                 "defaultValue": "60",
-                "group": "weather",
+                "groups": [ "weather" ],
                 "options": [
                     {
                         "label": "15 Minutes",
@@ -267,7 +267,7 @@
                 "messageKey": "WEATHER_PROVIDER",
                 "label": "Provider",
                 "defaultValue": "3",
-                "group": "weather",
+                "groups": [ "weather" ],
                 "options": [
                     {
                         "label": "Yahoo!",
@@ -292,22 +292,22 @@
                 "messageKey": "WEATHER_KEY",
                 "label": "API Key",
                 "description": "API key for the selected weather provider. You can retrieve your key stored at https://www.pmkey.xyz by filling in the form below",
-                "group": "weather"
+                "groups": [ "weather" ]
             },
             {
                 "type": "section",
-                "group": "weather",
+                "groups": [ "weather" ],
                 "items": [
                     {
                         "type": "heading",
                         "defaultValue": "Master Key",
-                        "group": "weather"
+                        "groups": [ "weather" ]
                     },
                     {
                         "type": "input",
                         "id": "masterKeyEmail",
                         "label": "Master Key Email",
-                        "group": "weather",
+                        "groups": [ "weather" ],
                         "attributes": {
                             "type": "email"
                         }
@@ -316,7 +316,7 @@
                         "type": "input",
                         "id": "masterKeyPin",
                         "label": "Master Key Pin",
-                        "group": "weather",
+                        "groups": [ "weather" ],
                         "attributes": {
                             "type": "tel"
                         }
@@ -325,12 +325,12 @@
                         "type": "button",
                         "id": "masterKeyButton",
                         "defaultValue": "Get Key",
-                        "group": "weather"
+                        "groups": [ "weather" ]
                     },
                     {
                         "type": "text",
                         "id": "masterKeyText",
-                        "group": "weather"
+                        "groups": [ "weather" ]
                     }
                 ]
             }
@@ -347,14 +347,14 @@
                 "defaultValue": 0,
                 "min": -12,
                 "max": 14,
-                "group": "alt-time"
+                "groups": [ "alt-time" ]
             },
             {
                 "type": "input",
                 "messageKey": "ALT_TIME_LABEL",
                 "label": "Alt Timezone Label",
                 "defaultValue": "ALT",
-                "group": "alt-time",
+                "groups": [ "alt-time" ],
                 "attributes": {
                     "maxlength": 3
                   }
