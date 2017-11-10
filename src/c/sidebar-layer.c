@@ -119,7 +119,7 @@ static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
     rect = layer_get_bounds(middle_layer);
     uint8_t h2 = rect.size.h;
 
-    if (h1 + h2 + h3 > bounds.size.h) {
+    if (h1 + h2 + h3 > bounds.size.h - (WIDGET_EDGE_MARGIN * 2)) {
         layer_set_hidden(middle_layer, true);
         h2 = 0;
     } else {
