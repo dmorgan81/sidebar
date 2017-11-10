@@ -77,6 +77,12 @@ static void prv_weather_handler(GenericWeatherInfo *info, GenericWeatherStatus s
     Data *data = layer_get_data(this);
     memcpy(&data->status, &status, sizeof(GenericWeatherStatus));
     memcpy(&data->info, info, sizeof(GenericWeatherInfo));
+#ifdef DEMO
+    data->status = GenericWeatherStatusAvailable;
+    data->info.temp_c = 21;
+    data->info.condition = GenericWeatherConditionClearSky;
+    data->info.day = true;
+#endif
     layer_mark_dirty(this);
 }
 

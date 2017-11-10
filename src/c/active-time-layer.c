@@ -51,6 +51,9 @@ static void prv_health_event_handler(HealthEventType event, void *this) {
     if (event == HealthEventSignificantUpdate || event == HealthEventMovementUpdate) {
         Data *data = layer_get_data(this);
         data->active_seconds = health_get_value_today(HealthMetricActiveSeconds);
+#ifdef DEMO
+        data->active_seconds = 5400;
+#endif
         layer_mark_dirty(this);
     }
 }

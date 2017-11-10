@@ -28,6 +28,9 @@ static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void
     logf();
     Data *data = layer_get_data(this);
     data->tm_sec = tick_time->tm_sec;
+#ifdef DEMO
+    data->tm_sec = 22;
+#endif
     layer_mark_dirty(this);
 }
 

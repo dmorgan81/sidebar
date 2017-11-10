@@ -51,6 +51,9 @@ static void prv_health_event_handler(HealthEventType event, void *this) {
         } else {
             data->heart_rate = 0;
         }
+#ifdef DEMO
+        data->heart_rate = 70;
+#endif
     }
     layer_mark_dirty(this);
 }
@@ -62,6 +65,9 @@ HeartRateLayer *heart_rate_layer_create(void) {
     Data *data = layer_get_data(this);
 
     WatchInfoModel model = watch_info_get_model();
+#if defined(DEMO) && defined(PBL_PLATFORM_DIORITE)
+    model = WATCH_INFO_MODEL_PEBBLE_2_HR;
+#endif
     if (model == WATCH_INFO_MODEL_PEBBLE_2_HR) {
         prv_health_event_handler(HealthEventSignificantUpdate, this);
         data->health_event_handle = events_health_service_events_subscribe(prv_health_event_handler, this);

@@ -39,6 +39,10 @@ static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void
     Data *data = layer_get_data(this);
 
     memcpy(&data->tick_time, tick_time, sizeof(struct tm));
+#ifdef DEMO
+    data->tick_time.tm_hour = 12;
+    data->tick_time.tm_min = 34;
+#endif
     time_t t = mktime(&data->tick_time);
     struct tm *tick = gmtime(&t);
     memcpy(&data->tick_time, tick, sizeof(struct tm));

@@ -48,6 +48,9 @@ static void prv_health_event_handler(HealthEventType event, void *this) {
     if (event == HealthEventSignificantUpdate || event == HealthEventMovementUpdate) {
         Data *data = layer_get_data(this);
         data->steps = health_get_value_today(HealthMetricStepCount);
+#ifdef DEMO
+        data->steps = 4500;
+#endif
         layer_mark_dirty(this);
     }
 }
