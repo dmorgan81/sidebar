@@ -18,8 +18,8 @@ typedef struct {
 } FontData;
 
 static FontData s_font_data[] = {
-     { RESOURCE_ID_FONT_LECO, -1, 0 },
-     { RESOURCE_ID_FONT_LATO, -4, -10 }
+     { RESOURCE_ID_FONT_LECO, PBL_IF_RECT_ELSE(-1, -2), 0 },
+     { RESOURCE_ID_FONT_LATO, PBL_IF_RECT_ELSE(-4, -8), -10 }
 };
 
 static void prv_update_proc(TimeLayer *this, GContext *ctx) {
@@ -39,6 +39,7 @@ static void prv_update_proc(TimeLayer *this, GContext *ctx) {
     fctx_init_context(&fctx, ctx);
 
     fctx_set_fill_color(&fctx, enamel_get_COLOR_TIME());
+#ifdef PBL_RECT
     fctx_set_text_em_height(&fctx, font, (bounds.size.h * 5) / 8);
 
 #if PBL_API_EXISTS(unobstructed_area_service_subscribe)
@@ -48,7 +49,10 @@ static void prv_update_proc(TimeLayer *this, GContext *ctx) {
     offset.y += p / 2;
     bounds.size.h -= p;
     fctx_set_pivot(&fctx, pivot);
-#endif
+#endif // PBL_API_EXISTS
+#else
+    fctx_set_text_em_height(&fctx, font, 84);
+#endif // PBL_RECT
 
     fctx_set_offset(&fctx, FPointI(offset.x + bounds.size.w + font_data.x_offset, offset.y + font_data.y_offset));
 

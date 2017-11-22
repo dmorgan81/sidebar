@@ -17,11 +17,12 @@ static EventHandle s_settings_event_handle;
 static void prv_settings_handler(void *context) {
     logf();
     Layer *root_layer = window_get_root_layer(s_window);
-    GRect bounds = layer_get_bounds(root_layer);
 
     connection_vibes_set_state(atoi(enamel_get_CONNECTION_VIBE()));
     hourly_vibes_set_enabled(enamel_get_HOURLY_VIBE());
 
+#ifdef PBL_RECT
+    GRect bounds = layer_get_bounds(root_layer);
     GRect frame = layer_get_frame(s_sidebar_layer);
     frame.origin.x = enamel_get_RIGHT_BAR() ? bounds.size.w - ACTION_BAR_WIDTH : 0;
     layer_set_frame(s_sidebar_layer, frame);
@@ -29,6 +30,9 @@ static void prv_settings_handler(void *context) {
     frame = layer_get_frame(s_time_layer);
     frame.origin.x = enamel_get_RIGHT_BAR() ? 0 : ACTION_BAR_WIDTH;
     layer_set_frame(s_time_layer, frame);
+#else
+    layer_mark_dirty(root_layer);
+#endif
 
     window_set_background_color(s_window, enamel_get_COLOR_BACKGROUND());
 }
@@ -39,9 +43,15 @@ static void prv_window_load(Window *window) {
     GRect bounds = layer_get_bounds(root_layer);
 
     s_sidebar_layer = sidebar_layer_create(GRect(bounds.size.w - ACTION_BAR_WIDTH, 0, ACTION_BAR_WIDTH, bounds.size.h));
+#ifdef PBL_RECT
     layer_add_child(root_layer, s_sidebar_layer);
+#endif
 
+#ifdef PBL_RECT
     s_time_layer = time_layer_create(GRect(0, 12, bounds.size.w - ACTION_BAR_WIDTH, bounds.size.h - 24));
+#else
+    s_time_layer = time_layer_create(GRect(ACTION_BAR_WIDTH + 4, 24,  bounds.size.w - (ACTION_BAR_WIDTH * 2), bounds.size.h - 48));
+#endif
     layer_add_child(root_layer, s_time_layer);
 
     prv_settings_handler(NULL);
