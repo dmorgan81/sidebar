@@ -28,7 +28,7 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
         gdraw_command_set_hidden(gdraw_command_list_get_command(list, 2), false);
     }
 
-    gdraw_command_image_draw(ctx, pdc, GPoint(2, 0));
+    gdraw_command_image_draw(ctx, pdc, GPoint(PBL_IF_RECT_ELSE(2, 6), 0));
     gdraw_command_image_destroy(pdc);
 
     char s[4];
@@ -45,7 +45,7 @@ static void prv_update_proc(BatteryLayer *this, GContext *ctx) {
 #else
         graphics_context_set_fill_color(ctx, stroke_color);
 #endif
-        graphics_fill_rect(ctx, GRect(6 + (20 - w), 3, w, 11), 0, GCornerNone);
+        graphics_fill_rect(ctx, GRect(PBL_IF_RECT_ELSE(6, 10) + (20 - w), 3, w, 11), 0, GCornerNone);
 
         snprintf(s, sizeof(s), "%d%%", data->charge_state.charge_percent);
     }

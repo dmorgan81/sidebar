@@ -40,7 +40,9 @@ typedef struct {
 static const char* (* const s_widget_settings[])() = {
     enamel_get_WIDGET_0,
     enamel_get_WIDGET_1,
+#ifdef PBL_RECT
     enamel_get_WIDGET_2
+#endif
 };
 
 static Layer *none_layer_create(void) {
@@ -82,7 +84,7 @@ static void (* const s_widget_destroy_funcs[])(Layer *) = {
 };
 
 typedef struct {
-    Widget *widgets[3];
+    Widget *widgets[PBL_IF_RECT_ELSE(3, 2)];
     StatusLayer *status_layer;
     bool connected;
     EventHandle settings_event_handle;
@@ -95,6 +97,8 @@ static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
     Data *data = layer_get_data(this);
 
     graphics_context_set_fill_color(ctx, enamel_get_COLOR_SIDEBAR());
+
+#ifdef PBL_RECT
     graphics_fill_rect(ctx, layer_get_bounds(this), 0, GCornerNone);
 
     Widget *widget = data->widgets[0];
@@ -139,6 +143,40 @@ static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
         rect.origin.y = ((y3 - rect.size.h) + (y1 + h1)) / 2;
         layer_set_frame(middle_layer, rect);
     }
+#else
+    uint8_t radius = bounds.size.h / 2;
+    graphics_fill_circle(ctx, GPoint(-radius / 4, radius), radius);
+    graphics_fill_circle(ctx, GPoint(bounds.size.w + (radius / 4), radius), radius);
+
+    Widget *widget = data->widgets[0];
+    bool show_status_layer = quiet_time_is_active() || !data->connected;
+    Layer *left_layer;
+    if (data->status_layer != NULL) {
+        layer_set_hidden(data->status_layer, !show_status_layer);
+        layer_set_hidden(widget->layer, show_status_layer);
+        left_layer = show_status_layer ? data->status_layer : widget->layer;
+    } else {
+        left_layer = widget->layer;
+    }
+    GRect rect = layer_get_bounds(left_layer);
+    uint8_t h = rect.size.h;
+    if (h != 0) {
+        rect = layer_get_frame(left_layer);
+        rect.origin.x = 0;
+        rect.origin.y = radius - (h / 2);
+        layer_set_frame(left_layer, rect);
+    }
+
+    widget = data->widgets[1];
+    rect = layer_get_bounds(widget->layer);
+    h = rect.size.h;
+    if (h != 0) {
+        rect = layer_get_frame(widget->layer);
+        rect.origin.x = bounds.size.w - radius + (radius / 4);
+        rect.origin.y = radius - (h / 2);
+        layer_set_frame(widget->layer, rect);
+    }
+#endif
 }
 
 static Widget *prv_widget_create(WidgetType type) {
@@ -189,7 +227,7 @@ static void prv_settings_handler(void *this) {
 
     WidgetType top_type = atoi(enamel_get_WIDGET_0());
     WidgetType mid_type = atoi(enamel_get_WIDGET_1());
-    WidgetType bot_type = atoi(enamel_get_WIDGET_2());
+    WidgetType bot_type = PBL_IF_RECT_ELSE(atoi(enamel_get_WIDGET_2()), WidgetTypeNone);
     bool have_status = (top_type == WidgetTypeStatus || mid_type == WidgetTypeStatus || bot_type == WidgetTypeStatus);
 
     if (have_status && data->status_layer != NULL) {

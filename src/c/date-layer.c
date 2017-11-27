@@ -31,7 +31,7 @@ static void prv_update_proc(DateLayer *this, GContext *ctx) {
         pdc_transform_recolor_image(pdc, GColorBlack, GColorWhite);
     }
 
-    gdraw_command_image_draw(ctx, pdc, GPoint(2, 14));
+    gdraw_command_image_draw(ctx, pdc, GPoint(PBL_IF_RECT_ELSE(2, 7), 14));
     gdraw_command_image_destroy(pdc);
 
     snprintf(s, sizeof(s), "%d", data->tick_time.tm_mday);
@@ -39,10 +39,12 @@ static void prv_update_proc(DateLayer *this, GContext *ctx) {
     graphics_draw_text(ctx, s, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD),
         GRect(0, 18, bounds.size.w, bounds.size.h), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
 
+#ifdef PBL_RECT
     strftime(s, sizeof(s), "%a", &data->tick_time);
     strupp(s);
     rect = GRect(0, 40, bounds.size.w, bounds.size.h);
     graphics_draw_outline_text(ctx, font, s, rect, stroke_color, text_color);
+#endif
 }
 
 static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void *this) {
@@ -54,7 +56,7 @@ static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void
 
 DateLayer *date_layer_create(void) {
     logf();
-    DateLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 56), sizeof(Data));
+    DateLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, PBL_IF_RECT_ELSE(56, 41)), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

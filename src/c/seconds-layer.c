@@ -36,7 +36,7 @@ static void prv_tick_handler(struct tm *tick_time, TimeUnits units_changed, void
 
 SecondsLayer *seconds_layer_create(void) {
     logf();
-    SecondsLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 25), sizeof(Data));
+    SecondsLayer *this = layer_create_with_data(GRect(0, 0, ACTION_BAR_WIDTH, 26), sizeof(Data));
     layer_set_update_proc(this, prv_update_proc);
     Data *data = layer_get_data(this);
 

@@ -50,7 +50,8 @@
                 "type": "toggle",
                 "messageKey": "RIGHT_BAR",
                 "label": "Bar Side",
-                "defaultValue": true
+                "defaultValue": true,
+                "capabilities": [ "RECT" ]
             },
             {
                 "type": "toggle",
@@ -184,7 +185,8 @@
                 "label": "Third Position",
                 "defaultValue": "3",
                 "options": [{ "label" : "Nothing", "value": "0" }],
-                "groups": [ "widget" ]
+                "groups": [ "widget" ],
+                "capabilities": [ "RECT" ]
             }
         ]
     },

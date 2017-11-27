@@ -19,8 +19,13 @@ module.exports = function(minified) {
         if (platform == 'aplite') {
             Clay.config[2].items[1].options.splice(3, 1);
         }
-        for (var i = 2; i < 4; i++) {
+        var len = platform == 'chalk' ? 3 : 4;
+        for (var i = 2; i < len; i++) {
             Clay.config[2].items[i].options = widgets;
+        }
+        if (platform == 'chalk') {
+            Clay.config[2].items[1].label = 'Left';
+            Clay.config[2].items[2].label = 'Right';
         }
     });
 

@@ -42,10 +42,13 @@ static void prv_window_load(Window *window) {
     Layer *root_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(root_layer);
 
-    s_sidebar_layer = sidebar_layer_create(GRect(bounds.size.w - ACTION_BAR_WIDTH, 0, ACTION_BAR_WIDTH, bounds.size.h));
 #ifdef PBL_RECT
-    layer_add_child(root_layer, s_sidebar_layer);
+    s_sidebar_layer = sidebar_layer_create(GRect(bounds.size.w - ACTION_BAR_WIDTH, 0, ACTION_BAR_WIDTH, bounds.size.h));
+#else
+    uint8_t sidebar_radius = 105;
+    s_sidebar_layer = sidebar_layer_create(GRect(0, (bounds.size.h / 2) - 1 - (sidebar_radius / 2), bounds.size.w, sidebar_radius));
 #endif
+    layer_add_child(root_layer, s_sidebar_layer);
 
 #ifdef PBL_RECT
     s_time_layer = time_layer_create(GRect(0, 12, bounds.size.w - ACTION_BAR_WIDTH, bounds.size.h - 24));
