@@ -52,7 +52,7 @@ static void prv_update_proc(StatusLayer *this, GContext *ctx) {
     }
 #endif
 
-    gdraw_command_image_draw(ctx, pdc, GPoint(2, 0));
+    gdraw_command_image_draw(ctx, pdc, GPoint(PBL_IF_RECT_ELSE(2, 6), 0));
     gdraw_command_image_destroy(pdc);
 }
 
