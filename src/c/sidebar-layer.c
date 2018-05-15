@@ -87,6 +87,11 @@ typedef struct {
     Widget *widgets[PBL_IF_RECT_ELSE(3, 2)];
     StatusLayer *status_layer;
     bool connected;
+#ifndef PBL_PLATFORM_APLITE
+    BatteryLayer *battery_layer;
+    BatteryChargeState charge_state;
+    EventHandle battery_state_event_handle;
+#endif
     EventHandle settings_event_handle;
     EventHandle connection_event_handle;
 } Data;
@@ -111,8 +116,9 @@ static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
     uint8_t h3 = rect.size.h;
 
     widget = data->widgets[1];
-    bool show_status_layer = quiet_time_is_active() || !data->connected;
     Layer *middle_layer;
+
+    bool show_status_layer = quiet_time_is_active() || !data->connected;
     if (data->status_layer != NULL) {
         layer_set_hidden(data->status_layer, !show_status_layer);
         layer_set_hidden(widget->layer, show_status_layer);
@@ -120,6 +126,22 @@ static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
     } else {
         middle_layer = widget->layer;
     }
+
+#ifndef PBL_PLATFORM_APLITE
+    if (enamel_get_LOW_BATTERY() && (!show_status_layer || data->status_layer == NULL)) {
+        bool show_battery_layer = data->charge_state.charge_percent < 20;
+        if (data->battery_layer != NULL) {
+            layer_set_hidden(data->battery_layer, !show_battery_layer);
+            layer_set_hidden(widget->layer, show_battery_layer);
+            middle_layer = show_battery_layer ? data->battery_layer : widget->layer;
+        } else {
+            middle_layer = widget->layer;
+        }
+    } else if (data->battery_layer != NULL) {
+        layer_set_hidden(data->battery_layer, true);
+    }
+#endif
+
     rect = layer_get_bounds(middle_layer);
     uint8_t h2 = rect.size.h;
 
@@ -149,8 +171,9 @@ static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
     graphics_fill_circle(ctx, GPoint(bounds.size.w + (radius / 4), radius), radius);
 
     Widget *widget = data->widgets[0];
-    bool show_status_layer = quiet_time_is_active() || !data->connected;
     Layer *left_layer;
+
+    bool show_status_layer = quiet_time_is_active() || !data->connected;
     if (data->status_layer != NULL) {
         layer_set_hidden(data->status_layer, !show_status_layer);
         layer_set_hidden(widget->layer, show_status_layer);
@@ -158,6 +181,21 @@ static void prv_update_proc(SidebarLayer *this, GContext *ctx) {
     } else {
         left_layer = widget->layer;
     }
+
+    if (enamel_get_LOW_BATTERY() && (!show_status_layer || data->status_layer == NULL)) {
+        bool show_battery_layer = data->charge_state.charge_percent < 20;
+        if (data->battery_layer != NULL) {
+            layer_set_hidden(data->battery_layer, !show_battery_layer);
+            layer_set_hidden(widget->layer, show_battery_layer);
+            left_layer = show_battery_layer ? data->battery_layer : widget->layer;
+        } else {
+            left_layer = widget->layer;
+        }
+    } else if (data->battery_layer != NULL) {
+        layer_set_hidden(data->battery_layer, true);
+    }
+
+
     GRect rect = layer_get_bounds(left_layer);
     uint8_t h = rect.size.h;
     if (h != 0) {
@@ -194,6 +232,15 @@ static void prv_widget_destroy(Widget *this) {
     destroy_func(this->layer);
     free(this);
 }
+
+#ifndef PBL_PLATFORM_APLITE
+static void prv_battery_state_handler(BatteryChargeState charge_state, void *this) {
+    logf();
+    Data *data = layer_get_data(this);
+    memcpy(&data->charge_state, &charge_state, sizeof(BatteryChargeState));
+    layer_mark_dirty(this);
+}
+#endif
 
 static void prv_connection_handler(bool connected, void *this) {
     logf();
@@ -242,6 +289,29 @@ static void prv_settings_handler(void *this) {
         prv_connection_handler(connection_service_peek_pebble_app_connection(), this);
     }
 
+#ifndef PBL_PLATFORM_APLITE
+    if (enamel_get_LOW_BATTERY()) {
+        bool have_battery = (top_type == WidgetTypeBattery || mid_type == WidgetTypeBattery || bot_type == WidgetTypeBattery);
+        if (have_battery && data->battery_layer != NULL) {
+            layer_remove_from_parent(data->battery_layer);
+            battery_layer_destroy(data->battery_layer);
+            data->battery_layer = NULL;
+            Widget *widget = data->widgets[1];
+            layer_set_hidden(widget->layer, false);
+        } else if (!have_battery && data->battery_layer == NULL) {
+            data->battery_layer = battery_layer_create();
+            layer_add_child(this, data->battery_layer);
+            prv_battery_state_handler(battery_state_service_peek(), this);
+        }
+    } else if (!enamel_get_LOW_BATTERY() && data->battery_layer != NULL) {
+        layer_remove_from_parent(data->battery_layer);
+        battery_layer_destroy(data->battery_layer);
+        data->battery_layer = NULL;
+        Widget *widget = data->widgets[1];
+        layer_set_hidden(widget->layer, false);
+    }
+#endif
+
     layer_mark_dirty(this);
 }
 
@@ -257,9 +327,14 @@ SidebarLayer *sidebar_layer_create(GRect frame) {
 
     prv_settings_handler(this);
     data->settings_event_handle = enamel_settings_received_subscribe(prv_settings_handler, this);
+    prv_connection_handler(connection_service_peek_pebble_app_connection(), this);
     data->connection_event_handle = events_connection_service_subscribe_context((EventConnectionHandlers) {
         .pebble_app_connection_handler = prv_connection_handler
     }, this);
+#ifndef PBL_PLATFORM_APLITE
+    prv_battery_state_handler(battery_state_service_peek(), this);
+    data->battery_state_event_handle = events_battery_state_service_subscribe_context(prv_battery_state_handler, this);
+#endif
 
     return this;
 }
@@ -267,8 +342,12 @@ SidebarLayer *sidebar_layer_create(GRect frame) {
 void sidebar_layer_destroy(SidebarLayer *this) {
     logf();
     Data *data = layer_get_data(this);
-    events_connection_service_unsubscribe(data->connection_event_handle);
     enamel_settings_received_unsubscribe(data->settings_event_handle);
+#ifndef PBL_PLATFORM_APLITE
+    events_battery_state_service_unsubscribe(data->battery_state_event_handle);
+    if (data->battery_layer != NULL) battery_layer_destroy(data->battery_layer);
+#endif
+    events_connection_service_unsubscribe(data->connection_event_handle);
     if (data->status_layer != NULL) status_layer_destroy(data->status_layer);
     for (uint i = 0; i < ARRAY_LENGTH(data->widgets); i++) {
         prv_widget_destroy(data->widgets[i]);

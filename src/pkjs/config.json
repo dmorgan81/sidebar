@@ -192,6 +192,26 @@
     },
     {
         "type": "section",
+        "groups": [ "battery" ],
+        "capabilities": [
+            "NOT_PLATFORM_APLITE"
+        ],
+        "items": [
+            {
+                "type": "toggle",
+                "messageKey": "LOW_BATTERY",
+                "label": "Show Low Battery",
+                "description": "Replace a widget when the battery is lower than 20%",
+                "defaultValue": true,
+                "groups": [ "battery" ],
+                "capabilities": [
+                    "NOT_PLATFORM_APLITE"
+                ]
+            }
+        ]
+    },
+    {
+        "type": "section",
         "groups": [ "weather" ],
         "items": [
             {
@@ -340,6 +360,7 @@
     },
     {
         "type": "section",
+        "groups": [ "alt-time" ],
         "items": [
             {
                 "type": "slider",

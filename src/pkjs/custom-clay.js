@@ -107,6 +107,12 @@ module.exports = function(minified) {
                 } else {
                     Clay.getItemsByGroup('weather').forEach(function(i) { i.hide(); });
                 }
+
+                if (widgets.map(function(w) { return w.get(); }).indexOf('3') > -1) {
+                    Clay.getItemsByGroup('battery').forEach(function(i) { i.hide(); });
+                } else {
+                    Clay.getItemsByGroup('battery').forEach(function(i) { i.show(); });
+                }
             }).trigger('change');
         });
 
